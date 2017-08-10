@@ -33,9 +33,19 @@ implementation
 {$R *.dfm}
 
 procedure TDodajPozycje.btnDodajClick(Sender: TObject);
+var i : integer;
 begin
+try
+  for I := 1 to StrToInt(edtIlosc.Text) do
+ begin
  wybranaPozycja:= TPozycja.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,1);
-  wybraneZamowienie.Insert(wybranaPozycja);
+ wybraneZamowienie.Insert(wybranaPozycja);
+ end;
+ ShowMessage('Dodanie zakoñczone sukcesem');
+ self.Close;
+except
+  ShowMessage('Wyst¹pi³ b³¹d');
+end;
 
 end;
 

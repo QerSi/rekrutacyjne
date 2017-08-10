@@ -38,7 +38,7 @@ type
     procedure btnUsunPozycjeClick(Sender: TObject);
     procedure btnDodajPozycjeClick(Sender: TObject);
     procedure dbgrd1CellClick(Column: TColumn);
-    procedure btnUsunPozycjeClick(Sender: TObject);
+    procedure btnPotwierdzUsunClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +64,11 @@ uses UDodajPozycje;
 procedure TSzczegolyZamowienia.btnAnulujClick(Sender: TObject);
 begin
 DataModule1.zqryzam.Refresh;
+if cbbIloscIst then
+begin
+  btnPotwierdzUsun.Free;
+  cbbIlosc.Free;
+end;
 self.Close;
 end;
 
@@ -105,6 +110,7 @@ begin
     btnPotwierdzUsun.Top:=375;
     btnPotwierdzUsun.Width:=104;
     btnPotwierdzUsun.Height:=25;
+    btnPotwierdzUsun.OnClick :=btnPotwierdzUsunClick;
 end;
 
 procedure TSzczegolyZamowienia.btnUzunClick(Sender: TObject);
@@ -253,6 +259,25 @@ begin
   edtStatus.Text := DataModule1.zqryzam.FieldByName('status').AsString;
 end;
 
-procedure TSzczegolyZamowienia.
+procedure TSzczegolyZamowienia.btnPotwierdzUsunClick(Sender: TObject);
+var i : Integer;
+    id : Integer;
+begin
+  id :=DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger;
+  try
+     for I := 1 to cbbIlosc.ItemIndex+1 do
+  begin
+    wybraneZamowienie.UsunPozycje();
+  end;
+  btnPotwierdzUsun.Free;
+  cbbIlosc.Free;
+  cbbIloscIst := false;
+  ShowMessage('Sukces');
+  DataModule1.zqryszczegoly.Refresh;
+  except
+   ShowMessage('Wyst¹pi³ b³¹d');
+  end;
+
+end;
 
 end.

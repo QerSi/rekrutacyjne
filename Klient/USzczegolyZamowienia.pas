@@ -224,7 +224,7 @@ begin
     Close;
     Clear;
     Add('select produkty.idprodukty,produkty.nazwa, produkty.cena, COUNT(zamowienia.idprodukty) From produkty,zamowienia WHERE zamowienia.idprodukty=produkty.idprodukty AND zamowienia.numer_zamowienia=:numer');
-    Add(' GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty');
+    Add(' GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty ORDER BY produkty.nazwa');
     ParamByName('numer').AsInteger := wybraneZamowienie.numer_zamowienia;
     Open;
   end;
@@ -261,16 +261,19 @@ end;
 
 procedure TSzczegolyZamowienia.btnPotwierdzUsunClick(Sender: TObject);
 var i : Integer;
+    id : Integer;
 begin
+  id :=DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger;
   try
      for I := 1 to cbbIlosc.ItemIndex+1 do
   begin
-    wybraneZamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
+    wybraneZamowienie.UsunPozycje(id);
   end;
   btnPotwierdzUsun.Free;
   cbbIlosc.Free;
   cbbIloscIst := false;
   ShowMessage('Sukces');
+  DataModule1.zqryszczegoly.Refresh;
   except
    ShowMessage('Wyst¹pi³ b³¹d');
   end;

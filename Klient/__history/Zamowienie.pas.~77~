@@ -100,28 +100,19 @@ begin
     begin
       if Self.pozycje[i].iloœæ>1 then
       begin
-        try
+
           self.pozycje[i].DeleteNumer(self.numer_zamowienia);
           Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ -1;
-          ShowMessage('Pozycja usuniêta');
           Break;
-        except
-          ShowMessage('Pozycja nie zosta³a usuniêta');
-          Break;
-        end;
 
       end
       else
       begin;
-        try
+
          self.pozycje[i].DeleteNumer(self.numer_zamowienia);
          Self.pozycje[i].Free;
-         ShowMessage('Pozycja usuniêta');
+
          Break;
-        except
-          ShowMessage('Pozycja nie zosta³a usuniêta');
-          Break;
-        end;
       end;
     end;
     
@@ -139,29 +130,20 @@ begin
       flaga:=True;
       if (self.pozycje[i]<>nil) AND (self.pozycje[i].nazwa = Poz.nazwa) then
       begin
-        //try
         flaga := False;
         Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ + poz.iloœæ;
+        self.pozycje[i].idpozycje := Poz.idpozycje;
         Self.pozycje[i].Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
-        ShowMessage('Pozycja dodana');
         Break;
-        //Except
-          ShowMessage('B³¹d podczas dodawania');
-        //end;
       end;
     end;
 
     if flaga then
     begin
 
-      //try
-      Self.pozycje[i].Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
+      Poz.Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
       SetLength(Self.pozycje,Length(self.pozycje)+1);
       Self.pozycje[Length(self.pozycje)-1] := Poz;
-      ShowMessage('Pozycja dodana');
-      //Except
-       ShowMessage('B³¹d podczas dodawania');
-      //end;
     end;
     DataModule1.zqryszczegoly.Refresh;
 end;

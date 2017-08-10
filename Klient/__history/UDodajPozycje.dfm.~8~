@@ -54,7 +54,6 @@ object DodajPozycje: TDodajPozycje
       item
         Expanded = False
         FieldName = 'opis'
-        Width = 64
         Visible = True
       end>
   end

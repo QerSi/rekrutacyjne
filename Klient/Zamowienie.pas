@@ -117,7 +117,7 @@ begin
     end;
     
   end;
-  DataModule1.zqryszczegoly.Refresh;
+
 end;
 
 procedure TZamowienie.Insert(Poz : TPozycja);
@@ -145,6 +145,6 @@ begin
       SetLength(Self.pozycje,Length(self.pozycje)+1);
       Self.pozycje[Length(self.pozycje)-1] := Poz;
     end;
-    DataModule1.zqryszczegoly.Refresh;
+
 end;
 end.

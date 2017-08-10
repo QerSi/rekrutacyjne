@@ -43,6 +43,7 @@ try
  end;
  ShowMessage('Dodanie zakoñczone sukcesem');
  self.Close;
+ DataModule1.zqryszczegoly.Refresh;
 except
   ShowMessage('Wyst¹pi³ b³¹d');
 end;

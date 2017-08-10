@@ -67,7 +67,7 @@ DataModule1.zqryzam.Refresh;
 if cbbIloscIst then
 begin
   btnPotwierdzUsun.Free;
-cbbIlosc.Free;
+  cbbIlosc.Free;
 end;
 self.Close;
 end;
@@ -261,14 +261,23 @@ end;
 
 procedure TSzczegolyZamowienia.btnPotwierdzUsunClick(Sender: TObject);
 var i : Integer;
+    id : Integer;
 begin
-  for I := 1 to cbbIlosc.ItemIndex+1 do
+  id :=DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger
+  try
+     for I := 1 to cbbIlosc.ItemIndex+1 do
   begin
-    wybraneZamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
+    wybraneZamowienie.UsunPozycje();
   end;
   btnPotwierdzUsun.Free;
   cbbIlosc.Free;
   cbbIloscIst := false;
+  ShowMessage('Sukces');
+  DataModule1.zqryszczegoly.Refresh;
+  except
+   ShowMessage('Wyst¹pi³ b³¹d');
+  end;
+
 end;
 
 end.
