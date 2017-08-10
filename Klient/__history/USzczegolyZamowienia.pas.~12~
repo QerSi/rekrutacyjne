@@ -27,6 +27,7 @@ type
     btnZapisz: TButton;
     btnUzun: TButton;
     btnAnuluj: TButton;
+    btnAnulujStatClick: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnZmienClick(Sender: TObject);
     procedure cbb1Select(Sender: TObject);
@@ -57,9 +58,8 @@ end;
 
 procedure TSzczegolyZamowienia.btnAnulujStatClickClick(Sender: TObject);
 begin
-  cbbStatus.Free;
-  btnAnulujStat.Free;
-  btnZmien.Enabled :=True;
+  cbbStatus:=Free;
+  btnAnulujStat:=Free;
 end;
 
 procedure TSzczegolyZamowienia.btnUzunClick(Sender: TObject);
@@ -134,8 +134,7 @@ begin
       Free
 
     end;
-    cbbStatus.Free;
-    btnAnulujStat.Free;
+  cbbStatus.Free;
   except
   with CreateMessageDialog('B³¹d podczas zmiany statusu', mtError, [mbOK],  mbOK ) do
     try

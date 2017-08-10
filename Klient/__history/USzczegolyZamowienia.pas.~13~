@@ -59,7 +59,6 @@ procedure TSzczegolyZamowienia.btnAnulujStatClickClick(Sender: TObject);
 begin
   cbbStatus.Free;
   btnAnulujStat.Free;
-  btnZmien.Enabled :=True;
 end;
 
 procedure TSzczegolyZamowienia.btnUzunClick(Sender: TObject);
@@ -134,8 +133,7 @@ begin
       Free
 
     end;
-    cbbStatus.Free;
-    btnAnulujStat.Free;
+  cbbStatus.Free;
   except
   with CreateMessageDialog('B³¹d podczas zmiany statusu', mtError, [mbOK],  mbOK ) do
     try

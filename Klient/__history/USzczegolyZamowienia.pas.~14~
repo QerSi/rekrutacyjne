@@ -59,7 +59,6 @@ procedure TSzczegolyZamowienia.btnAnulujStatClickClick(Sender: TObject);
 begin
   cbbStatus.Free;
   btnAnulujStat.Free;
-  btnZmien.Enabled :=True;
 end;
 
 procedure TSzczegolyZamowienia.btnUzunClick(Sender: TObject);

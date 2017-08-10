@@ -188,8 +188,16 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     Top = 416
     Width = 75
     Height = 25
-    Caption = 'Wyjd'#378
+    Caption = 'Anuluj'
     TabOrder = 7
     OnClick = btnAnulujClick
+  end
+  object btn1: TButton
+    Left = 400
+    Top = 392
+    Width = 75
+    Height = 25
+    Caption = 'btn1'
+    TabOrder = 8
   end
 end

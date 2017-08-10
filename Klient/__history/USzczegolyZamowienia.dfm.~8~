@@ -188,7 +188,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     Top = 416
     Width = 75
     Height = 25
-    Caption = 'Wyjd'#378
+    Caption = 'Anuluj'
     TabOrder = 7
     OnClick = btnAnulujClick
   end
