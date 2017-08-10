@@ -129,6 +129,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     TitleFont.Height = -13
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnCellClick = dbgrd1CellClick
     Columns = <
       item
         Expanded = False
@@ -138,13 +139,11 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
       item
         Expanded = False
         FieldName = 'cena'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'count'
-        Width = 64
         Visible = True
       end>
   end
@@ -167,8 +166,8 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     OnClick = btnZmienClick
   end
   object btnZapisz: TButton
-    Left = 16
-    Top = 416
+    Left = 8
+    Top = 456
     Width = 75
     Height = 25
     Caption = 'btnZapisz'
@@ -176,7 +175,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
   end
   object btnUzun: TButton
     Left = 118
-    Top = 416
+    Top = 456
     Width = 121
     Height = 25
     Caption = 'Uzu'#324' zam'#243'wienie'
@@ -191,5 +190,23 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     Caption = 'Wyjd'#378
     TabOrder = 7
     OnClick = btnAnulujClick
+  end
+  object btnUsunPozycje: TButton
+    Left = 145
+    Top = 375
+    Width = 104
+    Height = 25
+    Caption = 'Usu'#324' pozycj'#281
+    TabOrder = 8
+    OnClick = btnUsunPozycjeClick
+  end
+  object btnDodajPozycje: TButton
+    Left = 8
+    Top = 375
+    Width = 107
+    Height = 25
+    Caption = 'Dodaj Pozycje'
+    TabOrder = 9
+    OnClick = btnDodajPozycjeClick
   end
 end

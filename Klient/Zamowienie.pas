@@ -20,10 +20,11 @@ type
 
 
   constructor Create(Data_zamowienia : string; idzamowienia: Integer; idprodukty: Integer; iduzytkownicy:Integer; idstatusy: integer; numer_zamowienia:Integer); overload;
-  //procedure Insert;
+  procedure Insert(Poz : TPozycja);
   procedure Update;
   procedure Delete;
-  //destructor Destroy(); override;
+  procedure DodajPozycje(Poz : TPozycja);
+  procedure UsunPozycje(Id: Integer);
 
 end;
 
@@ -64,5 +65,86 @@ begin
       ExecSQL;
       Close;
   end;
+end;
+
+procedure TZamowienie.DodajPozycje(Poz : TPozycja);
+var i : Integer;
+    flaga : Boolean;
+begin
+  flaga:=True;
+  for I := 0 to Length(Self.pozycje)-1 do
+    begin
+      flaga:=True;
+      if (self.pozycje[i]<>nil) AND (self.pozycje[i].nazwa = Poz.nazwa) then
+      begin
+        flaga := False;
+        Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ + 1;
+        Break;
+      end;
+    end;
+
+    if flaga then
+    begin
+      SetLength(Self.pozycje,Length(self.pozycje)+1);
+      Self.pozycje[Length(self.pozycje)-1] := Poz;
+    end;
+
+end;
+
+procedure TZamowienie.UsunPozycje(Id: Integer);
+var i : Integer;
+begin
+  for I := 0 to Length(Self.pozycje)-1 do
+  begin
+    if self.pozycje[i].idpozycje = Id then
+    begin
+      if Self.pozycje[i].iloœæ>1 then
+      begin
+
+          self.pozycje[i].DeleteNumer(self.numer_zamowienia);
+          Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ -1;
+          Break;
+
+      end
+      else
+      begin;
+
+         self.pozycje[i].DeleteNumer(self.numer_zamowienia);
+         Self.pozycje[i].Free;
+
+         Break;
+      end;
+    end;
+    
+  end;
+  DataModule1.zqryszczegoly.Refresh;
+end;
+
+procedure TZamowienie.Insert(Poz : TPozycja);
+var i : Integer;
+    flaga : Boolean;
+begin
+  flaga:=True;
+  for I := 0 to Length(Self.pozycje)-1 do
+    begin
+      flaga:=True;
+      if (self.pozycje[i]<>nil) AND (self.pozycje[i].nazwa = Poz.nazwa) then
+      begin
+        flaga := False;
+        Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ + poz.iloœæ;
+        self.pozycje[i].idpozycje := Poz.idpozycje;
+        Self.pozycje[i].Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
+        Break;
+      end;
+    end;
+
+    if flaga then
+    begin
+
+      Poz.Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
+      SetLength(Self.pozycje,Length(self.pozycje)+1);
+      Self.pozycje[Length(self.pozycje)-1] := Poz;
+    end;
+    DataModule1.zqryszczegoly.Refresh;
 end;
 end.

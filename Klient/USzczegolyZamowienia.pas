@@ -27,17 +27,26 @@ type
     btnZapisz: TButton;
     btnUzun: TButton;
     btnAnuluj: TButton;
+    btnUsunPozycje: TButton;
+    btnDodajPozycje: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnZmienClick(Sender: TObject);
     procedure cbb1Select(Sender: TObject);
     procedure btnAnulujClick(Sender: TObject);
     procedure btnUzunClick(Sender: TObject);
     procedure btnAnulujStatClickClick(Sender: TObject);
+    procedure btnUsunPozycjeClick(Sender: TObject);
+    procedure btnDodajPozycjeClick(Sender: TObject);
+    procedure dbgrd1CellClick(Column: TColumn);
+    procedure btnPotwierdzUsunClick(Sender: TObject);
   private
     { Private declarations }
   public
     cbbStatus : TComboBox;
     btnAnulujStat : TButton;
+    lbWybierzIlosc : TLabel;
+    cbbIlosc : TComboBox;
+    btnPotwierdzUsun : TButton;
     { Public declarations }
   end;
 
@@ -45,13 +54,21 @@ var
   SzczegolyZamowienia: TSzczegolyZamowienia;
   statusy : array[0..3] of String;
   index : integer;
+  cbbIloscIst : Boolean;
 implementation
 
 {$R *.dfm}
 
+uses UDodajPozycje;
+
 procedure TSzczegolyZamowienia.btnAnulujClick(Sender: TObject);
 begin
 DataModule1.zqryzam.Refresh;
+if cbbIloscIst then
+begin
+  btnPotwierdzUsun.Free;
+  cbbIlosc.Free;
+end;
 self.Close;
 end;
 
@@ -60,6 +77,40 @@ begin
   cbbStatus.Free;
   btnAnulujStat.Free;
   btnZmien.Enabled :=True;
+end;
+
+procedure TSzczegolyZamowienia.btnDodajPozycjeClick(Sender: TObject);
+begin
+  DodajPozycje.ShowModal;
+end;
+
+procedure TSzczegolyZamowienia.btnUsunPozycjeClick(Sender: TObject);
+begin
+  //wybraneZamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
+    cbbIlosc:=TComboBox.Create(self);
+    cbbIlosc.Name := 'cbbIlosc';
+    cbbIlosc.Parent:=Self;
+    cbbIloscIst :=True;
+    cbbIlosc.Left:=255;
+    cbbIlosc.Top:=375;
+    cbbIlosc.Width:=70;
+    cbbIlosc.Height:=24;
+    for  Index := 1 to DataModule1.zqryszczegoly.FieldByName('count').AsInteger do
+    begin
+      cbbIlosc.Items.Add(Index.ToString);
+    end;
+    cbbIlosc.ItemIndex :=0;
+
+
+    btnPotwierdzUsun:=TButton.Create(self);
+    btnPotwierdzUsun.Name := 'btnPotwierdzUsun';
+    btnPotwierdzUsun.Caption := 'Usuñ';
+    btnPotwierdzUsun.Parent:=Self;
+    btnPotwierdzUsun.Left:=145;
+    btnPotwierdzUsun.Top:=375;
+    btnPotwierdzUsun.Width:=104;
+    btnPotwierdzUsun.Height:=25;
+    btnPotwierdzUsun.OnClick :=btnPotwierdzUsunClick;
 end;
 
 procedure TSzczegolyZamowienia.btnUzunClick(Sender: TObject);
@@ -153,6 +204,17 @@ begin
    DataModule1.zqryzam.Refresh;
 end;
 
+procedure TSzczegolyZamowienia.dbgrd1CellClick(Column: TColumn);
+begin
+  if cbbIloscIst then
+  begin
+    cbbIloscIst :=false;
+    cbbIlosc.Free;
+    btnPotwierdzUsun.Free;
+  end;
+
+end;
+
 procedure TSzczegolyZamowienia.FormShow(Sender: TObject);
 begin
   SzczegolyZamowienia.Top := Zamowienia.Top + 50;
@@ -161,7 +223,8 @@ begin
   begin
     Close;
     Clear;
-    Add('select produkty.nazwa, produkty.cena, COUNT(zamowienia.idprodukty) From produkty,zamowienia WHERE zamowienia.idprodukty=produkty.idprodukty AND zamowienia.numer_zamowienia=:numer GROUP BY produkty.nazwa, produkty.cena');
+    Add('select produkty.idprodukty,produkty.nazwa, produkty.cena, COUNT(zamowienia.idprodukty) From produkty,zamowienia WHERE zamowienia.idprodukty=produkty.idprodukty AND zamowienia.numer_zamowienia=:numer');
+    Add(' GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty');
     ParamByName('numer').AsInteger := wybraneZamowienie.numer_zamowienia;
     Open;
   end;
@@ -183,8 +246,8 @@ begin
 
   while not DataModule1.zqryszczegoly.Eof do
   begin
-    SetLength(wybraneZamowienie.pozycje,Length(wybraneZamowienie.pozycje)+1);
-    wybraneZamowienie.pozycje[Length(wybraneZamowienie.pozycje)-1] := TPozycja.Create(DataModule1.zqryszczegoly.FieldByName('nazwa').AsString,DataModule1.zqryszczegoly.FieldByName('cena').AsFloat,DataModule1.zqryszczegoly.FieldByName('count').AsInteger);
+
+    wybraneZamowienie.DodajPozycje(TPozycja.Create(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger,DataModule1.zqryszczegoly.FieldByName('nazwa').AsString,DataModule1.zqryszczegoly.FieldByName('cena').AsFloat,DataModule1.zqryszczegoly.FieldByName('count').AsInteger));
     DataModule1.zqryszczegoly.Next;
   end;
 
@@ -194,6 +257,24 @@ begin
   edtNazwisko.Text := DataModule1.zqryzam.FieldByName('nazwisko').AsString;
   edtData.Text := DataModule1.zqryzam.FieldByName('data_zamowienia').AsString;
   edtStatus.Text := DataModule1.zqryzam.FieldByName('status').AsString;
+end;
+
+procedure TSzczegolyZamowienia.btnPotwierdzUsunClick(Sender: TObject);
+var i : Integer;
+begin
+  try
+     for I := 1 to cbbIlosc.ItemIndex+1 do
+  begin
+    wybraneZamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
+  end;
+  btnPotwierdzUsun.Free;
+  cbbIlosc.Free;
+  cbbIloscIst := false;
+  ShowMessage('Sukces');
+  except
+   ShowMessage('Wyst¹pi³ b³¹d');
+  end;
+
 end;
 
 end.

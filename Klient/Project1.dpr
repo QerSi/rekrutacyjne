@@ -16,7 +16,8 @@ uses
   UZamowienia in 'UZamowienia.pas' {Zamowienia},
   USzczegolyZamowienia in 'USzczegolyZamowienia.pas' {SzczegolyZamowienia},
   Zamowienie in 'Zamowienie.pas',
-  Pozycja in 'Pozycja.pas';
+  Pozycja in 'Pozycja.pas',
+  UDodajPozycje in 'UDodajPozycje.pas' {DodajPozycje};
 
 {$R *.res}
 
@@ -34,5 +35,6 @@ begin
   Application.CreateForm(TEdytujProdukt, EdytujProdukt);
   Application.CreateForm(TZamowienia, Zamowienia);
   Application.CreateForm(TSzczegolyZamowienia, SzczegolyZamowienia);
+  Application.CreateForm(TDodajPozycje, DodajPozycje);
   Application.Run;
 end.

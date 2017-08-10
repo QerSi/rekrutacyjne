@@ -18,7 +18,7 @@ object Produkty: TProdukty
   object lbl1: TLabel
     Left = 8
     Top = 3
-    Width = 89
+    Width = 73
     Height = 23
     Caption = 'Produkty'
     Font.Charset = DEFAULT_CHARSET
