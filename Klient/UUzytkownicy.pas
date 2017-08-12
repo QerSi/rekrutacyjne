@@ -100,8 +100,8 @@ end;
 
 procedure TUzytkownicy.FormShow(Sender: TObject);
 begin
-Uzytkownicy.Top := main.Top + 50;
-Uzytkownicy.Left := main.Left + 50;
+Uzytkownicy.Top := main.Top + 20;
+Uzytkownicy.Left := main.Left + 20;
 with DataModule1.zqry, SQL do
   begin
       Close;

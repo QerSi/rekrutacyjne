@@ -106,8 +106,8 @@ end;
 
 procedure TNowyUzytkownik.FormShow(Sender: TObject);
 begin
-  NowyUzytkownik.Top := Uzytkownicy.Top + 50;
-  NowyUzytkownik.Left := Uzytkownicy.Left + 50;
+  NowyUzytkownik.Top := Uzytkownicy.Top + 20;
+  NowyUzytkownik.Left := Uzytkownicy.Left + 20;
 end;
 
 end.

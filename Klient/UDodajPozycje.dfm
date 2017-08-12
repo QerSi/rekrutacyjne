@@ -34,6 +34,7 @@ object DodajPozycje: TDodajPozycje
     Width = 633
     Height = 185
     DataSource = DataModule1.dsprodukty
+    ReadOnly = True
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -54,13 +55,12 @@ object DodajPozycje: TDodajPozycje
       item
         Expanded = False
         FieldName = 'opis'
-        Width = 64
         Visible = True
       end>
   end
   object edtIlosc: TEdit
     Left = 56
-    Top = 294
+    Top = 286
     Width = 65
     Height = 21
     NumbersOnly = True
@@ -84,6 +84,7 @@ object DodajPozycje: TDodajPozycje
     Height = 25
     Caption = 'Anuluj'
     TabOrder = 3
+    OnClick = btnAnulujClick
   end
   object dbmmoOpis: TDBMemo
     Left = 0
@@ -92,6 +93,7 @@ object DodajPozycje: TDodajPozycje
     Height = 89
     DataField = 'opis'
     DataSource = DataModule1.dsprodukty
+    ReadOnly = True
     TabOrder = 4
   end
 end

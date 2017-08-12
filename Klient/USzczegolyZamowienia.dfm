@@ -1,9 +1,10 @@
 object SzczegolyZamowienia: TSzczegolyZamowienia
   Left = 0
   Top = 0
+  BorderIcons = []
   Caption = 'SzczegolyZamowienia'
-  ClientHeight = 576
-  ClientWidth = 650
+  ClientHeight = 489
+  ClientWidth = 596
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -57,32 +58,32 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
   object pnl1: TPanel
     Left = 8
     Top = 40
-    Width = 634
+    Width = 577
     Height = 73
     TabOrder = 0
     object lbl2: TLabel
-      Left = 32
+      Left = 8
       Top = 5
       Width = 30
       Height = 16
       Caption = 'Login'
     end
     object lbl3: TLabel
-      Left = 232
+      Left = 208
       Top = 5
       Width = 25
       Height = 16
       Caption = 'Imi'#281
     end
     object lbl4: TLabel
-      Left = 440
+      Left = 424
       Top = 5
       Width = 53
       Height = 16
       Caption = 'Nazwisko'
     end
     object edtLogin: TEdit
-      Left = 32
+      Left = 8
       Top = 27
       Width = 121
       Height = 24
@@ -91,7 +92,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
       Text = 'edtLogin'
     end
     object edtImie: TEdit
-      Left = 232
+      Left = 208
       Top = 27
       Width = 145
       Height = 24
@@ -100,7 +101,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
       Text = 'edtImie'
     end
     object edtNazwisko: TEdit
-      Left = 440
+      Left = 424
       Top = 27
       Width = 145
       Height = 24
@@ -123,6 +124,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     Width = 577
     Height = 161
     DataSource = DataModule1.dsszczegoly
+    ReadOnly = True
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -165,30 +167,22 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     TabOrder = 4
     OnClick = btnZmienClick
   end
-  object btnZapisz: TButton
-    Left = 8
-    Top = 456
-    Width = 75
-    Height = 25
-    Caption = 'btnZapisz'
-    TabOrder = 5
-  end
   object btnUzun: TButton
-    Left = 118
+    Left = 8
     Top = 456
     Width = 121
     Height = 25
     Caption = 'Uzu'#324' zam'#243'wienie'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = btnUzunClick
   end
   object btnAnuluj: TButton
-    Left = 536
-    Top = 416
+    Left = 510
+    Top = 456
     Width = 75
     Height = 25
     Caption = 'Wyjd'#378
-    TabOrder = 7
+    TabOrder = 6
     OnClick = btnAnulujClick
   end
   object btnUsunPozycje: TButton
@@ -197,7 +191,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     Width = 104
     Height = 25
     Caption = 'Usu'#324' pozycj'#281
-    TabOrder = 8
+    TabOrder = 7
     OnClick = btnUsunPozycjeClick
   end
   object btnDodajPozycje: TButton
@@ -206,7 +200,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     Width = 107
     Height = 25
     Caption = 'Dodaj Pozycje'
-    TabOrder = 9
+    TabOrder = 8
     OnClick = btnDodajPozycjeClick
   end
 end

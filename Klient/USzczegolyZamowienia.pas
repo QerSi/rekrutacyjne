@@ -24,7 +24,6 @@ type
     lbl7: TLabel;
     edtStatus: TEdit;
     btnZmien: TButton;
-    btnZapisz: TButton;
     btnUzun: TButton;
     btnAnuluj: TButton;
     btnUsunPozycje: TButton;
@@ -217,8 +216,8 @@ end;
 
 procedure TSzczegolyZamowienia.FormShow(Sender: TObject);
 begin
-  SzczegolyZamowienia.Top := Zamowienia.Top + 50;
-  SzczegolyZamowienia.Left := Zamowienia.Left + 50;
+  SzczegolyZamowienia.Top := Zamowienia.Top + 20;
+  SzczegolyZamowienia.Left := Zamowienia.Left + 20;
   with DataModule1.zqryszczegoly, SQL do
   begin
     Close;
@@ -272,12 +271,28 @@ begin
   btnPotwierdzUsun.Free;
   cbbIlosc.Free;
   cbbIloscIst := false;
-  ShowMessage('Sukces');
-  DataModule1.zqryszczegoly.Refresh;
-  except
-   ShowMessage('Wyst¹pi³ b³¹d');
-  end;
+    with CreateMessageDialog('Sukces', mtConfirmation, [mbOK],  mbOK ) do
+    try
+      Position := poDesigned;
+      Left:=Self.Left+(Self.Width-Width) Div 2;
+      Top:=Self.Top+(Self.Height-Height) Div 2;
+      ShowModal
+    finally
+      Free
+    end;
 
+  except
+     with CreateMessageDialog('Wyst¹pi³ b³¹d', mtError, [mbOK],  mbOK ) do
+    try
+      Position := poDesigned;
+      Left:=Self.Left+(Self.Width-Width) Div 2;
+      Top:=Self.Top+(Self.Height-Height) Div 2;
+      ShowModal
+    finally
+      Free
+    end;
+  end;
+  DataModule1.zqryszczegoly.Refresh;
 end;
 
 end.

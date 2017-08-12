@@ -19,6 +19,7 @@ type
     procedure edtIloscChange(Sender: TObject);
     procedure btnDodajClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure btnAnulujClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -32,20 +33,43 @@ implementation
 
 {$R *.dfm}
 
+procedure TDodajPozycje.btnAnulujClick(Sender: TObject);
+begin
+  Self.Close;
+end;
+
 procedure TDodajPozycje.btnDodajClick(Sender: TObject);
 var i : integer;
 begin
 try
-  for I := 1 to StrToInt(edtIlosc.Text) do
- begin
- wybranaPozycja:= TPozycja.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,1);
+  DodajPozycje.Enabled := False;
+
+ wybranaPozycja:= TPozycja.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,StrToInt(edtIlosc.Text));
  wybraneZamowienie.Insert(wybranaPozycja);
- end;
- ShowMessage('Dodanie zakoñczone sukcesem');
+
+ with CreateMessageDialog('Dodawanie zakoñczone sukcesem', mtConfirmation, [mbOK],  mbOK ) do
+  try
+    Position := poDesigned;
+    Left:=Self.Left+(Self.Width-Width) Div 2;
+    Top:=Self.Top+(Self.Height-Height) Div 2;
+    ShowModal
+  finally
+    Free
+  end;
+  DodajPozycje.Enabled := True;
  self.Close;
  DataModule1.zqryszczegoly.Refresh;
 except
-  ShowMessage('Wyst¹pi³ b³¹d');
+  DodajPozycje.Enabled := True;
+  with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
+  try
+    Position := poDesigned;
+    Left:=Self.Left+(Self.Width-Width) Div 2;
+    Top:=Self.Top+(Self.Height-Height) Div 2;
+    ShowModal
+  finally
+    Free
+  end;
 end;
 
 end;
@@ -66,6 +90,9 @@ end;
 
 procedure TDodajPozycje.FormShow(Sender: TObject);
 begin
+  DodajPozycje.Top := SzczegolyZamowienia.Top + 20;
+  DodajPozycje.Left := SzczegolyZamowienia.Left + 20;
+  edtIlosc.Text :='1';
   with DataModule1.zqryprodukty, SQL do
   begin
       Close;

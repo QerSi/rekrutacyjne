@@ -30,14 +30,14 @@ uses USzczegolyZamowienia, UMain;
 
 procedure TZamowienia.btnSzczegolyClick(Sender: TObject);
 begin
-  wybraneZamowienie := TZamowienie.Create(DataModule1.zqryzam.FieldByName('data_zamowienia').AsString,DataModule1.zqryzam.FieldByName('idzamowienia').AsInteger,DataModule1.zqryzam.FieldByName('idprodukty').AsInteger,DataModule1.zqryzam.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqryzam.FieldByName('idstatusy').AsInteger,DataModule1.zqryzam.FieldByName('numer_zamowienia').AsInteger);
+  wybraneZamowienie := TZamowienie.Create(DataModule1.zqryzam.FieldByName('data_zamowienia').AsString,DataModule1.zqryzam.FieldByName('idzamowienia').AsInteger,DataModule1.zqryzam.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqryzam.FieldByName('idstatusy').AsInteger,DataModule1.zqryzam.FieldByName('numer_zamowienia').AsInteger);
   SzczegolyZamowienia.ShowModal;
 end;
 
 procedure TZamowienia.FormShow(Sender: TObject);
 begin
-  Zamowienia.Top := main.Top + 50;
-  Zamowienia.Left := main.Left + 50;
+  Zamowienia.Top := main.Top + 20;
+  Zamowienia.Left := main.Left + 20;
 with DataModule1.zqryzam, SQL do
 begin
   Close;

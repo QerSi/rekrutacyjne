@@ -119,8 +119,8 @@ end;
 
 procedure TEdytujProdukt.FormShow(Sender: TObject);
 begin
-  EdytujProdukt.Top := Produkty.Top + 50;
-  EdytujProdukt.Left := Produkty.Left + 50;
+  EdytujProdukt.Top := Produkty.Top + 20;
+  EdytujProdukt.Left := Produkty.Left + 20;
   edtNazwa.Text := wybranyProdukt.nazwa;
   edtcena.Text := FloatToStr(wybranyProdukt.cena);
   mmoOpis.Text := wybranyProdukt.opis;

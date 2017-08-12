@@ -119,8 +119,8 @@ end;
 procedure TNowyProdukt.FormShow(Sender: TObject);
 begin
   mmoOpis.Lines.Clear;
-  NowyProdukt.Top := Produkty.Top + 50;
-  NowyProdukt.Left := Produkty.Left + 50;
+  NowyProdukt.Top := Produkty.Top + 20;
+  NowyProdukt.Left := Produkty.Left + 20;
 end;
 
 end.

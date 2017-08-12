@@ -115,8 +115,8 @@ end;
 
 procedure TEdytujUzytkownika.FormShow(Sender: TObject);
 begin
-  EdytujUzytkownika.Top := Uzytkownicy.Top + 50;
-  EdytujUzytkownika.Left := Uzytkownicy.Left + 50;
+  EdytujUzytkownika.Top := Uzytkownicy.Top + 20;
+  EdytujUzytkownika.Left := Uzytkownicy.Left + 20;
   edtimie.Text := wybranyUzytkownik.imie;
   edtLogin.Text := wybranyUzytkownik.login;
   edthaslo.Text := wybranyUzytkownik.haslo;

@@ -82,8 +82,8 @@ end;
 
 procedure TProdukty.FormShow(Sender: TObject);
 begin
-Produkty.Top := main.Top + 50;
-Produkty.Left := main.Left + 50;
+Produkty.Top := main.Top + 20;
+Produkty.Left := main.Left + 20;
 with DataModule1.zqryprodukty, SQL do
   begin
       Close;

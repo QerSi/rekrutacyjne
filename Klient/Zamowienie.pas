@@ -10,7 +10,6 @@ type
   public
    Data_zamowienia : string;
    idzamowienia : Integer;
-   idprodukty : Integer;
    iduzytkownicy: Integer;
    idstatusy: Integer;
    numer_zamowienia : Integer;
@@ -19,7 +18,7 @@ type
 
 
 
-  constructor Create(Data_zamowienia : string; idzamowienia: Integer; idprodukty: Integer; iduzytkownicy:Integer; idstatusy: integer; numer_zamowienia:Integer); overload;
+  constructor Create(Data_zamowienia : string; idzamowienia: Integer; iduzytkownicy:Integer; idstatusy: integer; numer_zamowienia:Integer); overload;
   procedure Insert(Poz : TPozycja);
   procedure Update;
   procedure Delete;
@@ -29,11 +28,10 @@ type
 end;
 
 implementation
-constructor TZamowienie.Create(Data_zamowienia : string; idzamowienia: Integer; idprodukty: Integer; iduzytkownicy:Integer; idstatusy: integer; numer_zamowienia:Integer);
+constructor TZamowienie.Create(Data_zamowienia : string; idzamowienia: Integer; iduzytkownicy:Integer; idstatusy: integer; numer_zamowienia:Integer);
 begin
    Self.Data_zamowienia := Data_zamowienia;
    Self.idzamowienia := idzamowienia;
-   Self.idprodukty := idprodukty;
    Self.iduzytkownicy := iduzytkownicy;
    Self.idstatusy := idstatusy;
    Self.numer_zamowienia := numer_zamowienia;
@@ -78,11 +76,11 @@ begin
       if (self.pozycje[i]<>nil) AND (self.pozycje[i].nazwa = Poz.nazwa) then
       begin
         flaga := False;
-        Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ + 1;
+        Self.pozycje[i].ilosc := Self.pozycje[i].ilosc + Poz.ilosc;
+        Self.pozycje[i].AktualizujWartosc;
         Break;
       end;
     end;
-
     if flaga then
     begin
       SetLength(Self.pozycje,Length(self.pozycje)+1);
@@ -96,22 +94,19 @@ var i : Integer;
 begin
   for I := 0 to Length(Self.pozycje)-1 do
   begin
-    if self.pozycje[i].idpozycje = Id then
+    if (self.pozycje[i]<>nil) AND (self.pozycje[i].idpozycje = Id) then
     begin
-      if Self.pozycje[i].iloœæ>1 then
+      if Self.pozycje[i].ilosc>1 then
       begin
-
           self.pozycje[i].DeleteNumer(self.numer_zamowienia);
-          Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ -1;
+          Self.pozycje[i].ilosc := Self.pozycje[i].ilosc -1;
+          Self.pozycje[i].AktualizujWartosc;
           Break;
-
       end
       else
       begin;
-
          self.pozycje[i].DeleteNumer(self.numer_zamowienia);
-         Self.pozycje[i].Free;
-
+         Self.pozycje[i] := nil;
          Break;
       end;
     end;
@@ -121,30 +116,72 @@ begin
 end;
 
 procedure TZamowienie.Insert(Poz : TPozycja);
-var i : Integer;
-    flaga : Boolean;
+var i,j : Integer;
+    flagaplus,flaganowy : Boolean;
 begin
-  flaga:=True;
+  flagaplus:=True;
+  flaganowy:=True;
   for I := 0 to Length(Self.pozycje)-1 do
     begin
-      flaga:=True;
-      if (self.pozycje[i]<>nil) AND (self.pozycje[i].nazwa = Poz.nazwa) then
+      flagaplus:=True;
+      if (self.pozycje[i]<>nil) and (self.pozycje[i].nazwa = Poz.nazwa) then
       begin
-        flaga := False;
-        Self.pozycje[i].iloœæ := Self.pozycje[i].iloœæ + poz.iloœæ;
+        try
+        for j := 1 to Poz.ilosc do
+        begin
+          Self.pozycje[i].Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
+        end;
+        flagaplus := False;
+        Self.pozycje[i].ilosc := Self.pozycje[i].ilosc + poz.ilosc;
         self.pozycje[i].idpozycje := Poz.idpozycje;
-        Self.pozycje[i].Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
-        Break;
+        self.pozycje[i].AktualizujWartosc();
+        finally
+
+        end;
+         Break;
+      end ;
+    end;
+
+    if flagaplus=true then
+    begin
+      for I := 0 to Length(Self.pozycje)-1 do
+      begin
+        if (self.pozycje[i]=nil) then
+        begin
+          flaganowy := False;
+          try
+            Self.pozycje[i] := Poz;
+            for j := 1 to Poz.ilosc do
+            begin
+            Self.pozycje[i].Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
+            end;
+          except
+           Self.pozycje[i] := nil;
+          end;
+          Break;
+
+          if flagaplus then
+          begin
+            Break;
+          end;
+        end;
+      end;
+
+    if flaganowy = True then
+    begin
+      try
+        for j := 1 to Poz.ilosc do
+        begin
+          Poz.Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
+        end;
+        SetLength(Self.pozycje,Length(self.pozycje)+1);
+        Self.pozycje[Length(self.pozycje)-1] := Poz;
+      finally
       end;
     end;
-
-    if flaga then
-    begin
-
-      Poz.Insert(Self.iduzytkownicy,Self.idstatusy,Self.numer_zamowienia,Self.Data_zamowienia);
-      SetLength(Self.pozycje,Length(self.pozycje)+1);
-      Self.pozycje[Length(self.pozycje)-1] := Poz;
     end;
+
+
 
 end;
 end.
