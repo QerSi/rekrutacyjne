@@ -38,7 +38,7 @@ implementation
 
 {$R *.dfm}
 
-uses UData, UUzytkownicy;
+uses UData, UUzytkownicy, UMain;
 
 procedure TNowyUzytkownik.btnanulujClick(Sender: TObject);
 begin
@@ -106,8 +106,8 @@ end;
 
 procedure TNowyUzytkownik.FormShow(Sender: TObject);
 begin
-  NowyUzytkownik.Top := Uzytkownicy.Top + 20;
-  NowyUzytkownik.Left := Uzytkownicy.Left + 20;
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
 end;
 
 end.

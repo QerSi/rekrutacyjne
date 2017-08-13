@@ -58,7 +58,7 @@ implementation
 
 {$R *.dfm}
 
-uses UDodajPozycje;
+uses UDodajPozycje, UMain;
 
 procedure TSzczegolyZamowienia.btnAnulujClick(Sender: TObject);
 begin
@@ -216,8 +216,8 @@ end;
 
 procedure TSzczegolyZamowienia.FormShow(Sender: TObject);
 begin
-  SzczegolyZamowienia.Top := Zamowienia.Top + 20;
-  SzczegolyZamowienia.Left := Zamowienia.Left + 20;
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
   with DataModule1.zqryszczegoly, SQL do
   begin
     Close;

@@ -13,9 +13,12 @@ object Logowanie: TLogowanie
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  FormStyle = fsMDIForm
   OldCreateOrder = False
   ParentBiDiMode = False
   Position = poDesktopCenter
+  Visible = True
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object lbl1: TLabel

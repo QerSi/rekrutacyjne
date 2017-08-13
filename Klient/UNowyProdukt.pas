@@ -34,7 +34,7 @@ implementation
 
 {$R *.dfm}
 
-uses Produkt, UData, UProdukty;
+uses Produkt, UData, UProdukty, UMain;
 
 procedure TNowyProdukt.btnanulujClick(Sender: TObject);
 begin
@@ -119,8 +119,8 @@ end;
 procedure TNowyProdukt.FormShow(Sender: TObject);
 begin
   mmoOpis.Lines.Clear;
-  NowyProdukt.Top := Produkty.Top + 20;
-  NowyProdukt.Left := Produkty.Left + 20;
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
 end;
 
 end.

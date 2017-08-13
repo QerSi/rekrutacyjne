@@ -22,6 +22,7 @@ type
     procedure btnDodajClick(Sender: TObject);
     procedure btnEdytujClick(Sender: TObject);
     procedure btnUsunClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -80,10 +81,17 @@ begin
   end;
 end;
 
+procedure TProdukty.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Main.mmglowne.Items[3].Enabled := true;
+Action := TCloseAction.caFree;
+
+
+end;
+
 procedure TProdukty.FormShow(Sender: TObject);
 begin
-Produkty.Top := main.Top + 20;
-Produkty.Left := main.Left + 20;
+
 with DataModule1.zqryprodukty, SQL do
   begin
       Close;

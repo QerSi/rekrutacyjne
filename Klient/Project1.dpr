@@ -24,17 +24,15 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TMain, Main);
   Application.CreateForm(TLogowanie, Logowanie);
   Application.CreateForm(TDataModule1, DataModule1);
-  Application.CreateForm(TMain, Main);
-  Application.CreateForm(TUzytkownicy, Uzytkownicy);
   Application.CreateForm(TNowyUzytkownik, NowyUzytkownik);
   Application.CreateForm(TEdytujUzytkownika, EdytujUzytkownika);
-  Application.CreateForm(TProdukty, Produkty);
-  Application.CreateForm(TNowyProdukt, NowyProdukt);
-  Application.CreateForm(TEdytujProdukt, EdytujProdukt);
-  Application.CreateForm(TZamowienia, Zamowienia);
-  Application.CreateForm(TSzczegolyZamowienia, SzczegolyZamowienia);
   Application.CreateForm(TDodajPozycje, DodajPozycje);
+  Application.CreateForm(TEdytujProdukt, EdytujProdukt);
+  Application.CreateForm(TNowyProdukt, NowyProdukt);
+  Application.CreateForm(TSzczegolyZamowienia, SzczegolyZamowienia);
+  Application.ShowMainForm := False;
   Application.Run;
 end.

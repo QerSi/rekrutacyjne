@@ -34,7 +34,7 @@ implementation
 
 {$R *.dfm}
 
-uses UData;
+uses UData, UMain;
 
 procedure TEdytujProdukt.btnanulujClick(Sender: TObject);
 begin
@@ -119,8 +119,8 @@ end;
 
 procedure TEdytujProdukt.FormShow(Sender: TObject);
 begin
-  EdytujProdukt.Top := Produkty.Top + 20;
-  EdytujProdukt.Left := Produkty.Left + 20;
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
   edtNazwa.Text := wybranyProdukt.nazwa;
   edtcena.Text := FloatToStr(wybranyProdukt.cena);
   mmoOpis.Text := wybranyProdukt.opis;

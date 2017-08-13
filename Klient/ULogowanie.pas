@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids, UData, Uzytkownik,
-  Vcl.StdCtrls, Vcl.Imaging.jpeg, Vcl.ExtCtrls, Vcl.Imaging.pngimage;
+  Vcl.StdCtrls, Vcl.Imaging.jpeg, Vcl.ExtCtrls, Vcl.Imaging.pngimage,System.IniFiles;
 
 type
   TLogowanie = class(TForm)
@@ -23,10 +23,11 @@ type
     procedure btnAnulujClick(Sender: TObject);
     procedure edtHasloKeyPress(Sender: TObject; var Key: Char);
     procedure edtLoginKeyPress(Sender: TObject; var Key: Char);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
-    iduzytkownicy : Integer;
+    //iduzytkownicy : Integer;
   end;
 
 var
@@ -44,6 +45,15 @@ begin
 if Application.MessageBox('Zakoñczyæ pracê?', '', MB_YESNO +
   MB_ICONQUESTION + MB_DEFBUTTON2) = IDYES then
 begin
+    INI := TINIFile.Create(ExtractFilePath(Application.ExeName) + 'setup.ini');
+   try
+        INI.WriteInteger('Main', 'PositionTop', Main.Top);
+        INI.WriteInteger('Main', 'PositionLeft', Main.Left);
+        INI.WriteInteger('Main', 'height', Main.Height);
+        INI.WriteInteger('Main', 'Width', Main.Width);
+      finally
+        INI.Free;
+      end;
     Application.Terminate;
 end;
 
@@ -65,11 +75,16 @@ begin
 
   if edtLogin.Text=DataModule1.zqry.FieldByName('login').AsString then
     begin
-      Logowanie.Hide;
-      Main.Show;
+     
+      Main.mmglowne.Items[0][0].Enabled := True;
+      Main.mmglowne.Items[1].Enabled := True;
+      Main.mmglowne.Items[2].Enabled := True;
+      Main.mmglowne.Items[3].Enabled := True;
       edtLogin.Text:='';
       edtHaslo.Text:='';
-      iduzytkownicy := DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger;
+      Main.uzzalogowany := TUzytkownik.Create(DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqry.FieldByName('login').AsString,DataModule1.zqry.FieldByName('imie').AsString,DataModule1.zqry.FieldByName('nazwisko').AsString,DataModule1.zqry.FieldByName('administrator').AsBoolean,DataModule1.zqry.FieldByName('liczba_zamowien').AsInteger);
+      self.hide;
+      main.show;
     end
   else
   begin
@@ -124,6 +139,11 @@ begin
  Key:=#0;
 end;
 
+end;
+
+procedure TLogowanie.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//Action := TCloseAction.caFree;
 end;
 
 end.

@@ -38,7 +38,7 @@ implementation
 
 {$R *.dfm}
 
-uses UUzytkownicy, UData, UProdukty;
+uses UUzytkownicy, UData, UProdukty, UMain;
 
 procedure TEdytujUzytkownika.btnanulujClick(Sender: TObject);
 begin
@@ -115,8 +115,8 @@ end;
 
 procedure TEdytujUzytkownika.FormShow(Sender: TObject);
 begin
-  EdytujUzytkownika.Top := Uzytkownicy.Top + 20;
-  EdytujUzytkownika.Left := Uzytkownicy.Left + 20;
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
   edtimie.Text := wybranyUzytkownik.imie;
   edtLogin.Text := wybranyUzytkownik.login;
   edthaslo.Text := wybranyUzytkownik.haslo;

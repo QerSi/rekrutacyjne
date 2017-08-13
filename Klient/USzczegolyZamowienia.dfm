@@ -3,7 +3,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
   Top = 0
   BorderIcons = []
   Caption = 'SzczegolyZamowienia'
-  ClientHeight = 489
+  ClientHeight = 561
   ClientWidth = 596
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

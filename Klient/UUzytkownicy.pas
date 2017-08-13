@@ -23,6 +23,7 @@ type
     procedure btnEdytujClick(Sender: TObject);
     procedure btnUsunClick(Sender: TObject);
     procedure edtszukajChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -61,7 +62,7 @@ begin
 procedure TUzytkownicy.btnUsunClick(Sender: TObject);
 begin
   wybranyUzytkownik := TUzytkownik.Create(DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqry.FieldByName('login').AsString,DataModule1.zqry.FieldByName('haslo').AsString,DataModule1.zqry.FieldByName('imie').AsString,DataModule1.zqry.FieldByName('nazwisko').AsString,DataModule1.zqry.FieldByName('administrator').AsBoolean,DataModule1.zqry.FieldByName('liczba_zamowien').AsInteger);
-  if wybranyUzytkownik.iduzytkownicy = Logowanie.iduzytkownicy then
+  if wybranyUzytkownik.iduzytkownicy = Main.uzzalogowany.iduzytkownicy then
   begin
     ShowMessage('Nie mo¿esz usun¹æ w³asnego konta');
   end
@@ -98,11 +99,18 @@ begin
 
 end;
 
+procedure TUzytkownicy.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Main.mmglowne.Items[2].Enabled := true;
+Action := TCloseAction.caFree;
+
+end;
+
 procedure TUzytkownicy.FormShow(Sender: TObject);
 begin
-Uzytkownicy.Top := main.Top + 20;
-Uzytkownicy.Left := main.Left + 20;
+
 with DataModule1.zqry, SQL do
+
   begin
       Close;
       Clear;
