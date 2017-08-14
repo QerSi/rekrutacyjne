@@ -5,19 +5,19 @@ uses
   ULogowanie in 'ULogowanie.pas' {Logowanie},
   UData in 'UData.pas' {DataModule1: TDataModule},
   UMain in 'UMain.pas' {Main},
-  UUzytkownicy in 'UUzytkownicy.pas' {Uzytkownicy},
   UNowyUzytkownik in 'UNowyUzytkownik.pas' {NowyUzytkownik},
   Uzytkownik in 'Uzytkownik.pas',
   UEdytujUzytkownika in 'UEdytujUzytkownika.pas' {EdytujUzytkownika},
-  UProdukty in 'UProdukty.pas' {Produkty},
   Produkt in 'Produkt.pas',
   UNowyProdukt in 'UNowyProdukt.pas' {NowyProdukt},
   UEdytujProdukt in 'UEdytujProdukt.pas' {EdytujProdukt},
-  UZamowienia in 'UZamowienia.pas' {Zamowienia},
   USzczegolyZamowienia in 'USzczegolyZamowienia.pas' {SzczegolyZamowienia},
-  Zamowienie in 'Zamowienie.pas',
   Pozycja in 'Pozycja.pas',
-  UDodajPozycje in 'UDodajPozycje.pas' {DodajPozycje};
+  UDodajPozycje in 'UDodajPozycje.pas' {DodajPozycje},
+  FProdukty in 'FProdukty.pas' {Frame2: TFrame},
+  FZamowienia in 'FZamowienia.pas' {Zamowienia: TFrame},
+  Zamowienie in 'Zamowienie.pas',
+  FUzytkownicy in 'FUzytkownicy.pas' {Uzytkownicy: TFrame};
 
 {$R *.res}
 
@@ -27,12 +27,6 @@ begin
   Application.CreateForm(TMain, Main);
   Application.CreateForm(TLogowanie, Logowanie);
   Application.CreateForm(TDataModule1, DataModule1);
-  Application.CreateForm(TNowyUzytkownik, NowyUzytkownik);
-  Application.CreateForm(TEdytujUzytkownika, EdytujUzytkownika);
-  Application.CreateForm(TDodajPozycje, DodajPozycje);
-  Application.CreateForm(TEdytujProdukt, EdytujProdukt);
-  Application.CreateForm(TNowyProdukt, NowyProdukt);
-  Application.CreateForm(TSzczegolyZamowienia, SzczegolyZamowienia);
   Application.ShowMainForm := False;
   Application.Run;
 end.

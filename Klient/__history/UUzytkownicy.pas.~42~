@@ -1,0 +1,68 @@
+unit UUzytkownicy;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, UData, Vcl.StdCtrls, Uzytkownik, System.Generics.Collections, UNowyUzytkownik,
+  Data.DB, Vcl.DBGrids;
+
+type
+  TUzytkownicy = class(TForm)
+    dbgrd1: TDBGrid;
+    btnDodaj: TButton;
+    btnUsun: TButton;
+    btnEdytuj: TButton;
+    btnAnuluj: TButton;
+    lbl1: TLabel;
+    edtszukaj: TEdit;
+    lbl2: TLabel;
+    procedure btnAnulujClick(Sender: TObject);
+    procedure edtszukajChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Uzytkownicy: TUzytkownicy;
+  wybranyUzytkownik : TUzytkownik;
+
+implementation
+
+{$R *.dfm}
+
+uses UEdytujUzytkownika, ULogowanie, UMain;
+
+
+
+procedure TUzytkownicy.btnAnulujClick(Sender: TObject);
+begin
+  self.Close;
+end;
+
+procedure TUzytkownicy.edtszukajChange(Sender: TObject);
+begin
+ if edtszukaj.Text='' then
+ begin
+   DataModule1.zqry.Filtered := False;
+ end
+ else
+ begin
+  DataModule1.zqry.FilterOptions:=[foCaseInsensitive];
+   DataModule1.zqry.Filter :='login like '+QuotedStr('' + edtszukaj.Text + '*');
+   DataModule1.zqry.Filtered := True;
+ end;
+
+end;
+
+procedure TUzytkownicy.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Main.mmglowne.Items[2].Enabled := true;
+Action := TCloseAction.caFree;
+
+end;
+
+end.

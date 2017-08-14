@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids,
-  Vcl.DBGrids,UData, Vcl.DBCtrls, USzczegolyZamowienia, UZamowienia, Pozycja;
+  Vcl.DBGrids,UData, Vcl.DBCtrls, USzczegolyZamowienia, Pozycja,Zamowienie;
 
 type
   TDodajPozycje = class(TForm)
@@ -20,18 +20,32 @@ type
     procedure btnDodajClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnAnulujClick(Sender: TObject);
+
   private
-    { Private declarations }
+    wybraneZamowienie : TZamowienie;
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent); reintroduce; overload;
+    constructor Create(wybraneZamowienie : TZamowienie); reintroduce; overload;
   end;
 
 var
   DodajPozycje: TDodajPozycje;
   wybranaPozycja : TPozycja;
+
 implementation
 
 {$R *.dfm}
+
+constructor TDodajPozycje.Create(AOwner: TComponent);
+begin
+inherited;
+end;
+
+constructor TDodajPozycje.Create(wybraneZamowienie : TZamowienie);
+begin
+inherited Create(Application);
+Self.wybraneZamowienie := wybraneZamowienie;
+end;
 
 procedure TDodajPozycje.btnAnulujClick(Sender: TObject);
 begin
@@ -39,7 +53,6 @@ begin
 end;
 
 procedure TDodajPozycje.btnDodajClick(Sender: TObject);
-var i : integer;
 begin
 try
   DodajPozycje.Enabled := False;

@@ -106,10 +106,6 @@
             <Form>Main</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UUzytkownicy.pas">
-            <Form>Uzytkownicy</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="UNowyUzytkownik.pas">
             <Form>NowyUzytkownik</Form>
             <FormType>dfm</FormType>
@@ -117,10 +113,6 @@
         <DCCReference Include="Uzytkownik.pas"/>
         <DCCReference Include="UEdytujUzytkownika.pas">
             <Form>EdytujUzytkownika</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="UProdukty.pas">
-            <Form>Produkty</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Produkt.pas"/>
@@ -132,19 +124,30 @@
             <Form>EdytujProdukt</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UZamowienia.pas">
-            <Form>Zamowienia</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="USzczegolyZamowienia.pas">
             <Form>SzczegolyZamowienia</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Zamowienie.pas"/>
         <DCCReference Include="Pozycja.pas"/>
         <DCCReference Include="UDodajPozycje.pas">
             <Form>DodajPozycje</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FProdukty.pas">
+            <Form>Frame2</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FZamowienia.pas">
+            <Form>Zamowienia</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Zamowienie.pas"/>
+        <DCCReference Include="FUzytkownicy.pas">
+            <Form>Uzytkownicy</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

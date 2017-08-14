@@ -16,8 +16,6 @@ type
    pozycje : array of TPozycja;
 
 
-
-
   constructor Create(Data_zamowienia : string; idzamowienia: Integer; iduzytkownicy:Integer; idstatusy: integer; numer_zamowienia:Integer); overload;
   procedure Insert(Poz : TPozycja);
   procedure Update;

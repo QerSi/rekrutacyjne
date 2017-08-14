@@ -2,10 +2,12 @@ object NowyProdukt: TNowyProdukt
   Left = 0
   Top = 0
   BorderIcons = []
-  Caption = 'NowyProdukt'
-  ClientHeight = 299
-  ClientWidth = 334
+  BorderStyle = bsToolWindow
+  ClientHeight = 309
+  ClientWidth = 344
   Color = clBtnFace
+  DragKind = dkDock
+  DragMode = dmAutomatic
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

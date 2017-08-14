@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,UData,
-  Vcl.StdCtrls, Vcl.ExtCtrls, UZamowienia,Pozycja;
+  Vcl.StdCtrls, Vcl.ExtCtrls,Pozycja,FZamowienia,Zamowienie;
 
 type
   TSzczegolyZamowienia = class(TForm)
@@ -39,13 +39,15 @@ type
     procedure dbgrd1CellClick(Column: TColumn);
     procedure btnPotwierdzUsunClick(Sender: TObject);
   private
-    { Private declarations }
+    wybraneZamowienie : TZamowienie;
   public
     cbbStatus : TComboBox;
     btnAnulujStat : TButton;
     lbWybierzIlosc : TLabel;
     cbbIlosc : TComboBox;
     btnPotwierdzUsun : TButton;
+    constructor Create(AOwner: TComponent); reintroduce; overload;
+    constructor Create(wybraneZamowienie : TZamowienie); reintroduce; overload;
     { Public declarations }
   end;
 
@@ -54,11 +56,24 @@ var
   statusy : array[0..3] of String;
   index : integer;
   cbbIloscIst : Boolean;
+
 implementation
 
 {$R *.dfm}
 
 uses UDodajPozycje, UMain;
+
+
+constructor TSzczegolyZamowienia.Create(AOwner: TComponent);
+begin
+inherited;
+end;
+
+constructor TSzczegolyZamowienia.Create(wybraneZamowienie : TZamowienie);
+begin
+inherited Create(Application);
+Self.wybraneZamowienie := wybraneZamowienie;
+end;
 
 procedure TSzczegolyZamowienia.btnAnulujClick(Sender: TObject);
 begin
@@ -80,12 +95,13 @@ end;
 
 procedure TSzczegolyZamowienia.btnDodajPozycjeClick(Sender: TObject);
 begin
+  DodajPozycje := TDodajPozycje.Create(wybraneZamowienie);
   DodajPozycje.ShowModal;
 end;
 
 procedure TSzczegolyZamowienia.btnUsunPozycjeClick(Sender: TObject);
 begin
-  //wybraneZamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
+  wybraneZamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
     cbbIlosc:=TComboBox.Create(self);
     cbbIlosc.Name := 'cbbIlosc';
     cbbIlosc.Parent:=Self;
@@ -216,6 +232,7 @@ end;
 
 procedure TSzczegolyZamowienia.FormShow(Sender: TObject);
 begin
+
   Left := Main.Left + (Main.Width - Width) div 2;
   Top := Main.Top + (Main.Height - Height) div 2;
   with DataModule1.zqryszczegoly, SQL do

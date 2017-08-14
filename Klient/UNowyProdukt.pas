@@ -34,7 +34,7 @@ implementation
 
 {$R *.dfm}
 
-uses Produkt, UData, UProdukty, UMain;
+uses Produkt, UData,UMain;
 
 procedure TNowyProdukt.btnanulujClick(Sender: TObject);
 begin

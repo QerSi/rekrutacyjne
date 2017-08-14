@@ -1,0 +1,43 @@
+unit UZamowienia;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UData, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Zamowienie;
+
+type
+  TZamowienia = class(TForm)
+    dbgrd1: TDBGrid;
+    btnSzczegoly: TButton;
+    procedure btnSzczegolyClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Zamowienia: TZamowienia;
+  wybraneZamowienie : TZamowienie;
+implementation
+
+{$R *.dfm}
+
+uses USzczegolyZamowienia, UMain;
+
+procedure TZamowienia.btnSzczegolyClick(Sender: TObject);
+begin
+  wybraneZamowienie := TZamowienie.Create(DataModule1.zqryzam.FieldByName('data_zamowienia').AsString,DataModule1.zqryzam.FieldByName('idzamowienia').AsInteger,DataModule1.zqryzam.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqryzam.FieldByName('idstatusy').AsInteger,DataModule1.zqryzam.FieldByName('numer_zamowienia').AsInteger);
+  SzczegolyZamowienia.ShowModal;
+end;
+
+procedure TZamowienia.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Action := TCloseAction.caFree;
+
+end;
+
+end.

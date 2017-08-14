@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,UProdukty;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,Produkt;
 
 type
   TEdytujProdukt = class(TForm)
@@ -22,19 +22,30 @@ type
     procedure FormShow(Sender: TObject);
     procedure btndodajClick(Sender: TObject);
   private
-    { Private declarations }
+    wybranyProdukt : TProdukt;
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent); reintroduce; overload;
+    constructor Create(wybranyProdukt : TProdukt); reintroduce; overload;
   end;
 
 var
   EdytujProdukt: TEdytujProdukt;
-
+  wybranyProdukt: TProdukt;
 implementation
 
 {$R *.dfm}
 
 uses UData, UMain;
+constructor TEdytujProdukt.Create(AOwner: TComponent);
+begin
+inherited;
+end;
+
+constructor TEdytujProdukt.Create(wybranyProdukt : TProdukt);
+begin
+inherited Create(Application);
+Self.wybranyProdukt := wybranyProdukt;
+end;
 
 procedure TEdytujProdukt.btnanulujClick(Sender: TObject);
 begin
@@ -47,6 +58,7 @@ begin
  try
     cenad := strtofloat(edtcena.Text);
      try
+    wybranyProdukt.cena := cenad;
     wybranyProdukt.update;
     with CreateMessageDialog('Zmiany zapisane',  mtConfirmation, [mbOK],  mbOK ) do
     try

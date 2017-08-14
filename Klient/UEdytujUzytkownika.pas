@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,Uzytkownik;
 
 type
   TEdytujUzytkownika = class(TForm)
@@ -26,9 +26,10 @@ type
     procedure edtLoginChange(Sender: TObject);
     procedure edthasloChange(Sender: TObject);
   private
-    { Private declarations }
+     wybranyUzytkownik :TUzytkownik;
   public
-    { Public declarations }
+    constructor Create(AOwner: TComponent); reintroduce; overload;
+    constructor Create(wybranyUzytkownik : TUzytkownik); reintroduce; overload;
   end;
 
 var
@@ -38,7 +39,18 @@ implementation
 
 {$R *.dfm}
 
-uses UUzytkownicy, UData, UProdukty, UMain;
+uses UData, UMain, FUzytkownicy;
+
+constructor TEdytujUzytkownika.Create(AOwner: TComponent);
+begin
+inherited;
+end;
+
+constructor TEdytujUzytkownika.Create(wybranyUzytkownik : TUzytkownik);
+begin
+inherited Create(Application);
+Self.wybranyUzytkownik := wybranyUzytkownik;
+end;
 
 procedure TEdytujUzytkownika.btnanulujClick(Sender: TObject);
 begin
@@ -50,6 +62,7 @@ begin
   wybranyUzytkownik.imie :=Trim(edtimie.Text);
   wybranyUzytkownik.login :=  Trim(edtLogin.Text);
   wybranyUzytkownik.haslo := Trim(edthaslo.Text);
+  wybranyUzytkownik.nazwisko := Trim(edtnazwisko.Text);
   if chkadministrator.Checked = true then
   begin
      wybranyUzytkownik.administrator:=true;
@@ -58,7 +71,7 @@ begin
   begin
      wybranyUzytkownik.administrator:=False;
   end;
-  edtnazwisko.Text := wybranyUzytkownik.nazwisko;
+
   try
     wybranyUzytkownik.update;
     with CreateMessageDialog('Zamiany zosta³y zapisane',  mtConfirmation, [mbOK],  mbOK ) do
@@ -117,7 +130,7 @@ procedure TEdytujUzytkownika.FormShow(Sender: TObject);
 begin
   Left := Main.Left + (Main.Width - Width) div 2;
   Top := Main.Top + (Main.Height - Height) div 2;
-  edtimie.Text := wybranyUzytkownik.imie;
+  edtimie.Text :=  wybranyUzytkownik.imie;
   edtLogin.Text := wybranyUzytkownik.login;
   edthaslo.Text := wybranyUzytkownik.haslo;
   if wybranyUzytkownik.administrator=true then

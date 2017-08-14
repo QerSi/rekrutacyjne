@@ -4,7 +4,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, System.IniFiles,UUzytkownicy,UProdukty,Uzytkownik;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, System.IniFiles,Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
+  Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, UData,Uzytkownik,ULogowanie,
+  Produkt,Zamowienie,FZamowienia,FProdukty,FUzytkownicy;
 
 type
   TMain = class(TForm)
@@ -15,47 +17,35 @@ type
     Zamownia1: TMenuItem;
     Uzytkownicy1: TMenuItem;
     Produkty1: TMenuItem;
+    pnlGlowny: TPanel;
     procedure m(Sender: TObject);
     procedure Wyjd1Click(Sender: TObject);
     procedure Uzytkownicy1Click(Sender: TObject);
     procedure Produkty1Click(Sender: TObject);
     procedure Zamownia1Click(Sender: TObject);
-    procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
+    FZamowienia : TZamowienia;
+    FProdukty : TFrame2;
+    Fuzytkownicy : TUzytkownicy;
     uzzalogowany : Tuzytkownik;
   end;
 
 var
   Main: TMain;
   ini : TINIFile;
-  fUzytkownicy : TUzytkownicy;
 implementation
 
 {$R *.dfm}
 
-uses ULogowanie, UZamowienia;
+uses UEdytujProdukt;
 
 procedure TMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var i : Integer;
 begin
   Application.Terminate;
-end;
-
-procedure TMain.FormResize(Sender: TObject);
-var i : Integer;
-begin
-  for i := 0 to MDIChildCount - 1 do
-  begin
-    MDIChildren[i].Left := 0;
-    MDIChildren[i].Top := 0;
-    MDIChildren[i].Width := Main.ClientWidth - 4;
-    MDIChildren[i].Height := Main.ClientHeight - 4;
-  end;
-
 end;
 
 procedure TMain.FormShow(Sender: TObject);
@@ -73,44 +63,45 @@ begin
 end;
 
 procedure TMain.m(Sender: TObject);
-var i : Word;
 begin
-  if MDIChildCount>0 then
-  begin
-   for i := MDIChildCount-1 downto 0 do
-    begin
-         Self.MDIChildren[i].Close;
-    end;
-  end;
   Self.Hide;
   uzzalogowany := nil;
   Logowanie.Show;
-
 end;
 
 procedure TMain.Produkty1Click(Sender: TObject);
-var i : Word;
 begin
-  mmglowne.Items[3].Enabled := False;
-  Produkty := TProdukty.Create(self);
-  Produkty.Visible := True;
-  Produkty.Left := 0;
-    Produkty.Top := 0;
-    Produkty.Width := Main.ClientWidth - 4;
-    Produkty.Height := Main.ClientHeight - 4;
+  with DataModule1.zqryprodukty, SQL do
+  begin
+      Close;
+      Clear;
+      Add('SELECT * from public.produkty ORDER BY nazwa');
+      Open;
+      First;
+  end;
+    FProdukty.Free;
+    FProdukty := TFrame2.Create(pnlGlowny);
+    FProdukty.Parent:= pnlGlowny;
+    FProdukty.Align:= alClient;
+
 
 end;
 
 procedure TMain.Uzytkownicy1Click(Sender: TObject);
-var i : Word;
 begin
-  Main.mmglowne.Items[2].Enabled := false;
-  Uzytkownicy := TUzytkownicy.Create(self);
-  Uzytkownicy.Visible := True;
- Uzytkownicy.Left := 0;
-    Uzytkownicy.Top := 0;
-    Uzytkownicy.Width := Main.ClientWidth - 4;
-    Uzytkownicy.Height := Main.ClientHeight - 4;
+  with DataModule1.zqry, SQL do
+  begin
+      Close;
+      Clear;
+      Add('SELECT * from public.uzytkownicy ORDER BY login');
+      Open;
+      First;
+  end;
+      Fuzytkownicy.Free;
+      Fuzytkownicy := TUzytkownicy.Create(uzzalogowany);
+      Fuzytkownicy.setUZalogowany(uzzalogowany);
+      Fuzytkownicy.Parent:= pnlGlowny;
+      Fuzytkownicy.Align:= alClient;
 
 
 end;
@@ -129,15 +120,20 @@ begin
 end;
 
 procedure TMain.Zamownia1Click(Sender: TObject);
-var i : Word;
 begin
-  
-  Zamowienia := TZamowienia.Create(self);
-  Zamowienia.Visible := True;
-  Zamowienia.Left := 0;
-  Zamowienia.Top := 0;
-  Zamowienia.Width := Main.ClientWidth - 4;
-  Zamowienia.Height := Main.ClientHeight - 4;
+   with DataModule1.zqryzam, SQL do
+    begin
+      Close;
+      Clear;
+      Add('select distinct on (z.numer_zamowienia) z.idzamowienia, z.idprodukty, z.iduzytkownicy, z.idstatusy, z.numer_zamowienia,z.data_zamowienia,u.login,u.imie,u.nazwisko,s.idstatusy,s.status,p.nazwa,p.cena,p.idprodukty'
+      +' FROM zamowienia AS z,statusy AS s,uzytkownicy AS u,produkty AS p'
+      +' WHERE z.iduzytkownicy=u.iduzytkownicy AND z.idstatusy = s.idstatusy AND z.idprodukty = p.idprodukty');
+      Open;
+    end;
+      FZamowienia.Free;
+      FZamowienia := TZamowienia.Create(pnlGlowny);
+      FZamowienia.Parent:= pnlGlowny;
+      FZamowienia.Align:= alClient;
 end;
 
 end.
