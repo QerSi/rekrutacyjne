@@ -1,0 +1,75 @@
+unit FRaportMiesieczny;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask,DateUtils,
+  Data.DB, Vcl.Grids, Vcl.DBGrids, UData;
+
+type
+  TRaportMiesieczny = class(TFrame)
+    lbl1: TLabel;
+    btn1: TButton;
+    edtMiesiac: TEdit;
+    edtRok: TEdit;
+    lbl2: TLabel;
+    dbgrdZamowienia: TDBGrid;
+    procedure edtMiesiacExit(Sender: TObject);
+    procedure edtRokExit(Sender: TObject);
+    procedure btn1Click(Sender: TObject);
+  private
+    miesiac,rok : Integer;
+    data : TDate;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+
+procedure TRaportMiesieczny.btn1Click(Sender: TObject);
+begin
+  data := (EndOfAMonth(rok, miesiac));
+
+  with DataModule1.zqryRaportMsc, SQL do
+  begin
+    Close;
+    Clear;
+    Add('select login,imie,nazwisko,numer_zamowienia,data_zamowienia, SUM(produkty.cena) ');
+    Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia <:data AND zamowienia.idprodukty=produkty.idprodukty ');
+    Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia ');
+    ParamByName('data').AsDate := data;
+    ExecSQL;
+  end;
+end;
+
+procedure TRaportMiesieczny.edtMiesiacExit(Sender: TObject);
+begin
+  if  (edtMiesiac.Text='') or ((StrToInt(edtMiesiac.Text)>12) or (StrToInt(edtMiesiac.Text)<1))  then
+  begin
+    edtMiesiac.Text := IntToStr(Monthof(Date));
+    miesiac :=  StrToInt(edtMiesiac.Text);
+  end
+  else
+  begin
+     miesiac :=  StrToInt(edtMiesiac.Text);
+  end;
+
+end;
+
+procedure TRaportMiesieczny.edtRokExit(Sender: TObject);
+begin
+  if (edtRok.Text='') or (StrToInt(edtRok.Text)>YearOf(Date))  then
+  begin
+    edtRok.Text := IntToStr(YearOf(Date));
+    rok :=  StrToInt(edtRok.Text);
+  end;
+end;
+
+end.

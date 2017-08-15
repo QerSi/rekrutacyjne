@@ -23,6 +23,7 @@ object DataModule1: TDataModule1
   end
   object zqry: TZQuery
     Connection = ZCon
+    Active = True
     SQL.Strings = (
       'select * from public.uzytkownicy')
     Params = <>
@@ -64,6 +65,7 @@ object DataModule1: TDataModule1
   end
   object zqryinsert: TZQuery
     Connection = ZCon
+    Active = True
     SQL.Strings = (
       'select login from uzytkownicy')
     Params = <>
@@ -77,6 +79,7 @@ object DataModule1: TDataModule1
   end
   object zqryprodukty: TZQuery
     Connection = ZConprodukty
+    Active = True
     SQL.Strings = (
       'select * from public.produkty')
     Params = <>
@@ -225,13 +228,15 @@ object DataModule1: TDataModule1
   end
   object zqryszczegoly: TZQuery
     Connection = ZConzamowienia
-    Active = True
     SQL.Strings = (
       
-        'select produkty.nazwa, produkty.idprodukty, produkty.cena, COUNT' +
-        '(zamowienia.idprodukty) From produkty,zamowienia WHERE zamowieni' +
-        'a.idprodukty=produkty.idprodukty AND zamowienia.numer_zamowienia' +
-        '=1 GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty;')
+        'select numer_zamowienia,produkty.nazwa, produkty.idprodukty, pro' +
+        'dukty.cena, COUNT(zamowienia.idprodukty),Sum(cena),imie,nazwisko' +
+        ' From produkty,zamowienia,uzytkownicy WHERE zamowienia.idprodukt' +
+        'y=produkty.idprodukty AND zamowienia.numer_zamowienia=1 and zamo' +
+        'wienia.iduzytkownicy=uzytkownicy.iduzytkownicy GROUP BY produkty' +
+        '.nazwa, produkty.cena,produkty.idprodukty,imie,nazwisko,numer_za' +
+        'mowienia;')
     Params = <>
     Left = 80
     Top = 264
@@ -252,6 +257,22 @@ object DataModule1: TDataModule1
       FieldName = 'idprodukty'
       Required = True
     end
+    object wdstrngfldzqryszczegolyimie: TWideStringField
+      FieldName = 'imie'
+      Required = True
+    end
+    object wdstrngfldzqryszczegolynazwisko: TWideStringField
+      FieldName = 'nazwisko'
+      Required = True
+      Size = 30
+    end
+    object fltfldzqryszczegolysum: TFloatField
+      FieldName = 'sum'
+      ReadOnly = True
+    end
+    object intgrfld_zamowienia1: TIntegerField
+      FieldName = 'numer_zamowienia'
+    end
   end
   object dsszczegoly: TDataSource
     DataSet = zqryszczegoly
@@ -260,11 +281,12 @@ object DataModule1: TDataModule1
   end
   object zqrystatusy: TZQuery
     Connection = ZConzamowienia
+    Active = True
     SQL.Strings = (
       'select * from statusy Order By idstatusy')
     Params = <>
-    Left = 320
-    Top = 232
+    Left = 392
+    Top = 104
     object wdstrngfldzqrystatusystatus: TWideStringField
       FieldName = 'status'
       Required = True
@@ -276,7 +298,50 @@ object DataModule1: TDataModule1
   end
   object dsstatusy: TDataSource
     DataSet = zqrystatusy
-    Left = 376
-    Top = 232
+    Left = 464
+    Top = 104
+  end
+  object zqryRaportMsc: TZQuery
+    Connection = ZCon
+    SQL.Strings = (
+      
+        'select login,imie,nazwisko,numer_zamowienia,data_zamowienia, SUM' +
+        '(produkty.cena) '
+      
+        'From zamowienia,uzytkownicy,produkty WHERE data_zamowienia < '#39'20' +
+        '17-09-30'#39' AND zamowienia.idprodukty=produkty.idprodukty'
+      'GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia')
+    Params = <>
+    Left = 368
+    Top = 296
+    object wdstrngfldRaportMsclogin: TWideStringField
+      FieldName = 'login'
+      Required = True
+    end
+    object wdstrngfldRaportMscimie: TWideStringField
+      FieldName = 'imie'
+      Required = True
+    end
+    object wdstrngfldRaportMscnazwisko: TWideStringField
+      FieldName = 'nazwisko'
+      Required = True
+      Size = 30
+    end
+    object intgrfldRaportMscnumer_zamowienia: TIntegerField
+      FieldName = 'numer_zamowienia'
+    end
+    object dtfldRaportMscdata_zamowienia: TDateField
+      FieldName = 'data_zamowienia'
+      Required = True
+    end
+    object fltfldRaportMscsum: TFloatField
+      FieldName = 'sum'
+      ReadOnly = True
+    end
+  end
+  object dsRaportMsc: TDataSource
+    DataSet = zqryRaportMsc
+    Left = 432
+    Top = 296
   end
 end

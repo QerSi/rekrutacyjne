@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, System.IniFiles,Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
   Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, UData,Uzytkownik,ULogowanie,
-  Produkt,Zamowienie,FZamowienia,FProdukty,FUzytkownicy;
+  Produkt,Zamowienie,FZamowienia,FProdukty,FUzytkownicy,FRaportMsc;
 
 type
   TMain = class(TForm)
@@ -18,6 +18,9 @@ type
     Uzytkownicy1: TMenuItem;
     Produkty1: TMenuItem;
     pnlGlowny: TPanel;
+    a1: TMenuItem;
+    Raportmiesiczny: TMenuItem;
+    Zamwienieuytkownika1: TMenuItem;
     procedure m(Sender: TObject);
     procedure Wyjd1Click(Sender: TObject);
     procedure Uzytkownicy1Click(Sender: TObject);
@@ -25,12 +28,14 @@ type
     procedure Zamownia1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure RaportmiesicznyClick(Sender: TObject);
   private
     { Private declarations }
   public
     FZamowienia : TZamowienia;
     FProdukty : TFrame2;
     Fuzytkownicy : TUzytkownicy;
+    FRapMsc : TRaportMsc;
     uzzalogowany : Tuzytkownik;
   end;
 
@@ -80,11 +85,28 @@ begin
       First;
   end;
     FProdukty.Free;
-    FProdukty := TFrame2.Create(pnlGlowny);
+    FProdukty := TFrame2.Create(self);
     FProdukty.Parent:= pnlGlowny;
     FProdukty.Align:= alClient;
 
 
+end;
+
+procedure TMain.RaportmiesicznyClick(Sender: TObject);
+begin
+      with DataModule1.zqryRaportMsc, SQL do
+      begin
+        Close;
+        Clear;
+        Add('select login,imie,nazwisko,numer_zamowienia,data_zamowienia, SUM(produkty.cena) ');
+        Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia <'+QuotedStr('2017-12-12')+'AND zamowienia.idprodukty=produkty.idprodukty ');
+        Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia');
+        Open;
+      end;
+      FRapMsc.Free;
+      FRapMsc := TRaportMsc.Create(self);
+      FRapMsc.Parent:= pnlGlowny;
+      FRapMsc.Align:= alClient;
 end;
 
 procedure TMain.Uzytkownicy1Click(Sender: TObject);

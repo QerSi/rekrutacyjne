@@ -28,7 +28,7 @@ object Main: TMain
   end
   object mmglowne: TMainMenu
     Left = 40
-    Top = 512
+    Top = 496
     object Program1: TMenuItem
       Caption = 'Program'
       object Wyloguj1: TMenuItem
@@ -51,6 +51,16 @@ object Main: TMain
     object Produkty1: TMenuItem
       Caption = 'Produkty'
       OnClick = Produkty1Click
+    end
+    object a1: TMenuItem
+      Caption = 'Raporty'
+      object Raportmiesiczny: TMenuItem
+        Caption = 'Raport miesi'#281'czny'
+        OnClick = RaportmiesicznyClick
+      end
+      object Zamwienieuytkownika1: TMenuItem
+        Caption = 'Zam'#243'wienie u'#380'ytkownika'
+      end
     end
   end
 end

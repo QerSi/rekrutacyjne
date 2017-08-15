@@ -17,7 +17,8 @@ uses
   FProdukty in 'FProdukty.pas' {Frame2: TFrame},
   FZamowienia in 'FZamowienia.pas' {Zamowienia: TFrame},
   Zamowienie in 'Zamowienie.pas',
-  FUzytkownicy in 'FUzytkownicy.pas' {Uzytkownicy: TFrame};
+  FUzytkownicy in 'FUzytkownicy.pas' {Uzytkownicy: TFrame},
+  FRaportMsc in 'FRaportMsc.pas' {RaportMsc: TFrame};
 
 {$R *.res}
 

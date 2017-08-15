@@ -1,0 +1,43 @@
+unit FRaportMiesieczny;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask,DateUtils,
+  Data.DB, Vcl.Grids, Vcl.DBGrids, UData;
+
+type
+  Tsss = class(TFrame)
+    lbl1: TLabel;
+    btn1: TButton;
+    edtMiesiac: TEdit;
+    edtRok: TEdit;
+    lbl2: TLabel;
+    dbgrdZamowienia: TDBGrid;
+    procedure edtRokExit(Sender: TObject);
+    procedure btn1Click(Sender: TObject);
+  private
+    miesiac,rok : Integer;
+    data : TDate;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+
+procedure Tsss.btn1Click(Sender: TObject);
+begin
+;
+end;
+
+procedure Tsss.edtRokExit(Sender: TObject);
+
+
+end.

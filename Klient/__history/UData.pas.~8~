@@ -1,0 +1,76 @@
+unit UData;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection;
+
+type
+  TDataModule1 = class(TDataModule)
+    ZCon: TZConnection;
+    zqry: TZQuery;
+    ds: TDataSource;
+    zqry_iduzytkownicy: TIntegerField;
+    zqry_login: TWideStringField;
+    zqry_haslo: TWideStringField;
+    zqry_imie: TWideStringField;
+    zqry_nazwisko: TWideStringField;
+    zqry_administrator: TBooleanField;
+    zqry_liczba_zamowien: TIntegerField;
+    zqryinsert: TZQuery;
+    dsinsert: TDataSource;
+    zqryprodukty: TZQuery;
+    dsprodukty: TDataSource;
+    ZConprodukty: TZConnection;
+    nazwa: TWideStringField;
+    cena: TFloatField;
+    opis: TWideStringField;
+    idprodukty: TIntegerField;
+    ZConzamowienia: TZConnection;
+    zqryzam: TZQuery;
+    dszam: TDataSource;
+    intgrfldzqryzamidzamowienia: TIntegerField;
+    intgrfldzqryzamidprodukty: TIntegerField;
+    intgrfldzqryzamiduzytkownicy: TIntegerField;
+    intgrfldzqryzamidstatusy: TIntegerField;
+    intgrfld_zamowienia: TIntegerField;
+    dtfld_zamowienia: TDateField;
+    wdstrngfldzqryzamlogin: TWideStringField;
+    wdstrngfldzqryzamimie: TWideStringField;
+    wdstrngfldzqryzamnazwisko: TWideStringField;
+    intgrfld_1: TIntegerField;
+    wdstrngfldzqryzamstatus: TWideStringField;
+    wdstrngfldzqryzamnazwa: TWideStringField;
+    fltfldzqryzamcena: TFloatField;
+    intgrfld_11: TIntegerField;
+    zqryszczegoly: TZQuery;
+    dsszczegoly: TDataSource;
+    wdstrngfldzqryszczegolynazwa: TWideStringField;
+    fltfldzqryszczegolycena: TFloatField;
+    lrgntfldzqryszczegolycount: TLargeintField;
+    zqrystatusy: TZQuery;
+    dsstatusy: TDataSource;
+    wdstrngfldzqrystatusystatus: TWideStringField;
+    intgrfldzqrystatusyidstatusy: TIntegerField;
+    intgrfldzqryszczegolyidprodukty: TIntegerField;
+    wdstrngfldzqryszczegolyimie: TWideStringField;
+    wdstrngfldzqryszczegolynazwisko: TWideStringField;
+    fltfldzqryszczegolysum: TFloatField;
+    intgrfld_zamowienia1: TIntegerField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

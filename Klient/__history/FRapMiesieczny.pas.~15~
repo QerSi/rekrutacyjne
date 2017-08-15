@@ -1,0 +1,45 @@
+unit FRapMiesieczny;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids,UData,DateUtils,
+  Vcl.DBGrids, Vcl.StdCtrls;
+
+type
+  TRaportMiesieczny = class(TFrame)
+    lbl1: TLabel;
+    btn1: TButton;
+    edtMiesiac: TEdit;
+    edtRok: TEdit;
+    lbl2: TLabel;
+    dbgrdZamowienia: TDBGrid;
+    procedure btn1Click(Sender: TObject);
+  private
+    miesiac,rok : Integer;
+    data : TDate;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TRaportMiesieczny.btn1Click(Sender: TObject);
+begin
+  data := (EndOfAMonth(rok, miesiac));
+  with DataModule1.zqryRaportMsc, SQL do
+  begin
+    Close;
+    Clear;
+    Add('select login,imie,nazwisko,numer_zamowienia,data_zamowienia, SUM(produkty.cena) ');
+    Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia <:"data" AND zamowienia.idprodukty=produkty.idprodukty ');
+    Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia');
+    ParamByName('data').AsString := FormatDateTime('yyy-mm-dd', data);
+    ExecSQL;
+  end
+end;
+
+

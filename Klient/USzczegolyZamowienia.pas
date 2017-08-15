@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,UData,
-  Vcl.StdCtrls, Vcl.ExtCtrls,Pozycja,FZamowienia,Zamowienie;
+  Vcl.StdCtrls, Vcl.ExtCtrls,Pozycja,FZamowienia,Zamowienie, frxDBSet, frxClass;
 
 type
   TSzczegolyZamowienia = class(TForm)
@@ -28,6 +28,9 @@ type
     btnAnuluj: TButton;
     btnUsunPozycje: TButton;
     btnDodajPozycje: TButton;
+    frxReportSzczegolyZamowienia: TfrxReport;
+    frxdb1: TfrxDBDataset;
+    btnDrukuj: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnZmienClick(Sender: TObject);
     procedure cbb1Select(Sender: TObject);
@@ -38,6 +41,7 @@ type
     procedure btnDodajPozycjeClick(Sender: TObject);
     procedure dbgrd1CellClick(Column: TColumn);
     procedure btnPotwierdzUsunClick(Sender: TObject);
+    procedure btnDrukujClick(Sender: TObject);
   private
     wybraneZamowienie : TZamowienie;
   public
@@ -97,6 +101,11 @@ procedure TSzczegolyZamowienia.btnDodajPozycjeClick(Sender: TObject);
 begin
   DodajPozycje := TDodajPozycje.Create(wybraneZamowienie);
   DodajPozycje.ShowModal;
+end;
+
+procedure TSzczegolyZamowienia.btnDrukujClick(Sender: TObject);
+begin
+frxReportSzczegolyZamowienia.ShowReport(true);
 end;
 
 procedure TSzczegolyZamowienia.btnUsunPozycjeClick(Sender: TObject);
@@ -239,8 +248,8 @@ begin
   begin
     Close;
     Clear;
-    Add('select produkty.idprodukty,produkty.nazwa, produkty.cena, COUNT(zamowienia.idprodukty) From produkty,zamowienia WHERE zamowienia.idprodukty=produkty.idprodukty AND zamowienia.numer_zamowienia=:numer');
-    Add(' GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty ORDER BY produkty.nazwa');
+    Add('select numer_zamowienia,produkty.nazwa, produkty.idprodukty, produkty.cena, COUNT(zamowienia.idprodukty),Sum(cena),imie,nazwisko From produkty,zamowienia,uzytkownicy WHERE zamowienia.idprodukty=produkty.idprodukty AND');
+    Add('  zamowienia.numer_zamowienia=:numer and zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty,imie,nazwisko,numer_zamowienia');
     ParamByName('numer').AsInteger := wybraneZamowienie.numer_zamowienia;
     Open;
   end;
