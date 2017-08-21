@@ -5,10 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,UData,
-  Vcl.StdCtrls, Vcl.ExtCtrls,Pozycja,FZamowienia,Zamowienie, frxDBSet, frxClass;
+  Vcl.StdCtrls, Vcl.ExtCtrls,Pozycja,FZamowienia,Zamowienie, frxDBSet, frxClass,FormBase;
 
 type
-  TSzczegolyZamowienia = class(TForm)
+  TSzczegolyZamowienia = class(TFormBase)
     pnl1: TPanel;
     edtLogin: TEdit;
     lbl1: TLabel;
@@ -50,7 +50,6 @@ type
     lbWybierzIlosc : TLabel;
     cbbIlosc : TComboBox;
     btnPotwierdzUsun : TButton;
-    constructor Create(AOwner: TComponent); reintroduce; overload;
     constructor Create(wybraneZamowienie : TZamowienie); reintroduce; overload;
     { Public declarations }
   end;
@@ -66,12 +65,6 @@ implementation
 {$R *.dfm}
 
 uses UDodajPozycje, UMain;
-
-
-constructor TSzczegolyZamowienia.Create(AOwner: TComponent);
-begin
-inherited;
-end;
 
 constructor TSzczegolyZamowienia.Create(wybraneZamowienie : TZamowienie);
 begin
@@ -143,17 +136,17 @@ if wybraneZamowienie.idstatusy=3 then
   begin
     try
       wybraneZamowienie.Delete;
-      ShowMessage('Sukces');
+      Przycisk('Zamowienie usuniête',mtConfirmation);
     except
        ShowMessage('B³¹d');
+       Przycisk('Wyst¹pi³ b³ad',mtError);
     end;
-
     Self.Close;
     DataModule1.zqryzam.Refresh;
   end
 else
   begin
-    ShowMessage('Zamowienie musi mieæ status "Anulowane"');
+    Przycisk('Zamowienie musi mieæ status "Anulowane"',mtInformation);
   end;
 
 
@@ -199,28 +192,11 @@ begin
   btnZmien.Enabled := True;
   wybraneZamowienie.Update;
   edtStatus.Text := statusy[wybraneZamowienie.idstatusy];
-  with CreateMessageDialog('Status zosta³ zmieniony',  mtConfirmation, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-
-    end;
+  Przycisk('Status zosta³ zmieniony',  mtConfirmation);
     cbbStatus.Free;
     btnAnulujStat.Free;
   except
-  with CreateMessageDialog('B³¹d podczas zmiany statusu', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
+  Przycisk('B³¹d podczas zmiany statusu', mtError);
   cbbStatus.Free;
   btnZmien.Enabled := True;
 
@@ -244,23 +220,27 @@ begin
 
   Left := Main.Left + (Main.Width - Width) div 2;
   Top := Main.Top + (Main.Height - Height) div 2;
-  with DataModule1.zqryszczegoly, SQL do
-  begin
-    Close;
-    Clear;
-    Add('select numer_zamowienia,produkty.nazwa, produkty.idprodukty, produkty.cena, COUNT(zamowienia.idprodukty),Sum(cena),imie,nazwisko From produkty,zamowienia,uzytkownicy WHERE zamowienia.idprodukty=produkty.idprodukty AND');
-    Add('  zamowienia.numer_zamowienia=:numer and zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty,imie,nazwisko,numer_zamowienia');
-    ParamByName('numer').AsInteger := wybraneZamowienie.numer_zamowienia;
-    Open;
+  try
+    with DataModule1.zqryszczegoly, SQL do
+    begin
+      Close;
+      Clear;
+      Add('select data_zamowienia,numer_zamowienia,produkty.nazwa, produkty.idprodukty, produkty.cena, COUNT(zamowienia.idprodukty),Sum(cena),imie,nazwisko From produkty,zamowienia,uzytkownicy WHERE zamowienia.idprodukty=produkty.idprodukty AND');
+      Add('  zamowienia.numer_zamowienia=:numer and zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty,imie,nazwisko,numer_zamowienia,data_zamowienia');
+      ParamByName('numer').AsInteger := wybraneZamowienie.numer_zamowienia;
+      Open;
+    end;
+    with DataModule1.zqrystatusy, SQL do
+    begin
+      Close;
+      Clear;
+      Add('select * from statusy Order By idstatusy');
+      Open;
+    end;
+  except
+    Przycisk('B³¹d po³¹czenia z baza',mtError);
   end;
 
-  with DataModule1.zqrystatusy, SQL do
-  begin
-    Close;
-    Clear;
-    Add('select * from statusy Order By idstatusy');
-    Open;
-  end;
   index :=0;
   while not DataModule1.zqrystatusy.Eof do
   begin
@@ -271,17 +251,15 @@ begin
 
   while not DataModule1.zqryszczegoly.Eof do
   begin
-
     wybraneZamowienie.DodajPozycje(TPozycja.Create(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger,DataModule1.zqryszczegoly.FieldByName('nazwa').AsString,DataModule1.zqryszczegoly.FieldByName('cena').AsFloat,DataModule1.zqryszczegoly.FieldByName('count').AsInteger));
     DataModule1.zqryszczegoly.Next;
   end;
-
-
   edtImie.Text := DataModule1.zqryzam.FieldByName('imie').AsString;
   edtLogin.Text := DataModule1.zqryzam.FieldByName('login').AsString;
   edtNazwisko.Text := DataModule1.zqryzam.FieldByName('nazwisko').AsString;
   edtData.Text := DataModule1.zqryzam.FieldByName('data_zamowienia').AsString;
   edtStatus.Text := DataModule1.zqryzam.FieldByName('status').AsString;
+
 end;
 
 procedure TSzczegolyZamowienia.btnPotwierdzUsunClick(Sender: TObject);
@@ -297,26 +275,10 @@ begin
   btnPotwierdzUsun.Free;
   cbbIlosc.Free;
   cbbIloscIst := false;
-    with CreateMessageDialog('Sukces', mtConfirmation, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
+   Przycisk('Sukces', mtConfirmation);
 
   except
-     with CreateMessageDialog('Wyst¹pi³ b³¹d', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
+    Przycisk('Wyst¹pi³ b³¹d', mtError);
   end;
   DataModule1.zqryszczegoly.Refresh;
 end;

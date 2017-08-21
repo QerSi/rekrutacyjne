@@ -268,7 +268,7 @@ var i : Integer;
 begin
   id :=DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger;
   try
-     for I := 1 to cbbIlosc.ItemIndex+1 do
+     for I := 1 to cbbIlosc.ItemIndex do
   begin
     wybraneZamowienie.UsunPozycje(id);
   end;
