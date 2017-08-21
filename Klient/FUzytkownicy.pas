@@ -33,7 +33,7 @@ implementation
 
 {$R *.dfm}
 
-uses UEdytujUzytkownika;
+uses UEdytujUzytkownika, UMain;
 
 
 procedure TUzytkownicy.setUZalogowany(uzzalogowany : TUzytkownik);
@@ -58,7 +58,7 @@ begin
   wybranyUzytkownik := TUzytkownik.Create(DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqry.FieldByName('login').AsString,DataModule1.zqry.FieldByName('haslo').AsString,DataModule1.zqry.FieldByName('imie').AsString,DataModule1.zqry.FieldByName('nazwisko').AsString,DataModule1.zqry.FieldByName('administrator').AsBoolean,DataModule1.zqry.FieldByName('liczba_zamowien').AsInteger);
   if wybranyUzytkownik.iduzytkownicy = uzzalogowany.iduzytkownicy then
   begin
-    //////Self.Przycisk('nie mozna usun¹æ w³asnego konta',mtInformation);
+    main.Przycisk('nie mozna usun¹æ w³asnego konta',mtInformation);
   end
   else
   begin

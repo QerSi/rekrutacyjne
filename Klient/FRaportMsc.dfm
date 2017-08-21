@@ -1,7 +1,7 @@
 object RaportMsc: TRaportMsc
   Left = 0
   Top = 0
-  Width = 832
+  Width = 762
   Height = 464
   Align = alTop
   Font.Charset = DEFAULT_CHARSET
@@ -125,7 +125,7 @@ object RaportMsc: TRaportMsc
   object pnl2: TPanel
     Left = 0
     Top = 0
-    Width = 832
+    Width = 762
     Height = 113
     Align = alTop
     Color = clMoneyGreen
@@ -155,7 +155,7 @@ object RaportMsc: TRaportMsc
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42962.677177129600000000
-    ReportOptions.LastChange = 42962.997132453700000000
+    ReportOptions.LastChange = 42968.596805937500000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       ''
@@ -252,7 +252,7 @@ object RaportMsc: TRaportMsc
           Fill.BackColor = clBlack
           HAlign = haCenter
           Memo.UTF8W = (
-            'Zam'#243'wienia w miesi'#261'cu ....')
+            'Zestawienie zam'#243'wie'#324)
           ParentFont = False
           Style = 'Title'
           VAlign = vaCenter
@@ -260,7 +260,7 @@ object RaportMsc: TRaportMsc
       end
       object GroupHeader1: TfrxGroupHeader
         FillType = ftBrush
-        Height = 94.488250000000000000
+        Height = 113.385900000000000000
         Top = 105.826840000000000000
         Width = 718.110700000000000000
         Condition = 'frxDBDataset1."numer_zamowienia"'
@@ -283,7 +283,7 @@ object RaportMsc: TRaportMsc
           VAlign = vaCenter
         end
         object Memo3: TfrxMemoView
-          Top = 26.456710000000000000
+          Top = 26.456709999999990000
           Width = 114.000000000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -299,7 +299,7 @@ object RaportMsc: TRaportMsc
         end
         object Memo4: TfrxMemoView
           Left = 114.000000000000000000
-          Top = 26.456710000000000000
+          Top = 26.456709999999990000
           Width = 151.000000000000000000
           Height = 18.897650000000000000
           DataField = 'login'
@@ -316,7 +316,7 @@ object RaportMsc: TRaportMsc
           Style = 'Data'
         end
         object Memo5: TfrxMemoView
-          Top = 45.354360000000000000
+          Top = 45.354360000000010000
           Width = 114.000000000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -332,7 +332,7 @@ object RaportMsc: TRaportMsc
         end
         object Memo6: TfrxMemoView
           Left = 113.779530000000000000
-          Top = 45.354360000000000000
+          Top = 45.354360000000010000
           Width = 313.519790000000000000
           Height = 18.897650000000000000
           DataSet = frxdbRaportMsc
@@ -348,7 +348,7 @@ object RaportMsc: TRaportMsc
           Style = 'Data'
         end
         object Memo9: TfrxMemoView
-          Top = 64.252010000000000000
+          Top = 64.252010000000010000
           Width = 114.000000000000000000
           Height = 22.677180000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -364,7 +364,7 @@ object RaportMsc: TRaportMsc
         end
         object Memo10: TfrxMemoView
           Left = 113.779530000000000000
-          Top = 68.031540000000000000
+          Top = 68.031540000000010000
           Width = 78.000000000000000000
           Height = 18.897650000000000000
           DataField = 'data_zamowienia'
@@ -380,18 +380,9 @@ object RaportMsc: TRaportMsc
           ParentFont = False
           Style = 'Data'
         end
-      end
-      object MasterData1: TfrxMasterData
-        FillType = ftBrush
-        Height = 26.456710000000000000
-        Top = 222.992270000000000000
-        Width = 718.110700000000000000
-        DataSet = frxdbRaportMsc
-        DataSetName = 'frxDBDataset1'
-        RowCount = 0
         object Memo11: TfrxMemoView
           Left = 597.165740000000000000
-          Top = 3.779530000000000000
+          Top = 90.708720000000000000
           Width = 121.559060000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -406,10 +397,18 @@ object RaportMsc: TRaportMsc
           Style = 'Header'
         end
       end
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Top = 241.889920000000000000
+        Width = 718.110700000000000000
+        DataSet = frxdbRaportMsc
+        DataSetName = 'frxDBDataset1'
+        RowCount = 0
+      end
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
         Height = 26.456710000000000000
-        Top = 411.968770000000000000
+        Top = 404.409710000000000000
         Width = 718.110700000000000000
         object Memo13: TfrxMemoView
           Align = baWidth
@@ -438,11 +437,11 @@ object RaportMsc: TRaportMsc
       object ReportSummary1: TfrxReportSummary
         FillType = ftBrush
         Height = 79.370130000000000000
-        Top = 309.921460000000000000
+        Top = 302.362400000000000000
         Width = 718.110700000000000000
         object Memo7: TfrxMemoView
           Align = baWidth
-          Top = 7.559059999999990000
+          Top = 7.559059999999988000
           Width = 718.110700000000000000
           Height = 64.252010000000000000
           DataSet = frxdbRaportMsc
@@ -459,7 +458,7 @@ object RaportMsc: TRaportMsc
         end
         object Memo17: TfrxMemoView
           Left = 166.299320000000000000
-          Top = 34.015770000000000000
+          Top = 30.236240000000010000
           Width = 49.133890000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -475,7 +474,7 @@ object RaportMsc: TRaportMsc
         end
         object Memo18: TfrxMemoView
           Left = 3.779530000000000000
-          Top = 34.015770000000000000
+          Top = 30.236240000000010000
           Width = 162.519790000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -490,9 +489,9 @@ object RaportMsc: TRaportMsc
           ParentFont = False
         end
         object Memo16: TfrxMemoView
-          Left = 468.661720000000000000
-          Top = 34.015770000000000000
-          Width = 125.338590000000000000
+          Left = 525.354670000000000000
+          Top = 30.236240000000010000
+          Width = 185.811070000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWhite
@@ -501,24 +500,9 @@ object RaportMsc: TRaportMsc
           Font.Style = [fsBold]
           Fill.BackColor = clBlack
           Memo.UTF8W = (
-            'Warto'#347#263' zam'#243'wie'#324)
+            'Warto'#347#263' zam'#243'wie'#324': [SUM(<frxDBDataset1."sum">,MasterData1,3)] z'#322)
           ParentFont = False
           Style = 'Header'
-        end
-        object SysMemo1: TfrxSysMemoView
-          Left = 597.165740000000000000
-          Top = 33.629870000000000000
-          Width = 64.252010000000000000
-          Height = 18.897650000000000000
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWhite
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = []
-          Fill.BackColor = clBlack
-          Memo.UTF8W = (
-            '[SUM(<frxDBDataset1."sum">,MasterData1,3)] z'#322)
-          ParentFont = False
         end
       end
     end

@@ -30,7 +30,7 @@ implementation
 
 {$R *.dfm}
 
-uses UNowyProdukt, UEdytujProdukt, UData,Produkt;
+uses UNowyProdukt, UEdytujProdukt, UData,Produkt, UMain;
 
 var
 wybranyProdukt : TProdukt;
@@ -58,9 +58,9 @@ begin
     begin
       try
       wybranyProdukt.Delete;      
-        /////////////self.Przycisk('Produkt zosta³ usuniêty',mtConfirmation);
+        main.Przycisk('Produkt zosta³ usuniêty',mtConfirmation);
       except
-        /////////////////////////Self.Przycisk('B³¹d podczas usuwania',mtError);
+        main.Przycisk('B³¹d podczas usuwania',mtError);
       end;
     end;
     with DataModule1.zqryprodukty, SQL do

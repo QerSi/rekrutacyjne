@@ -356,7 +356,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
         Top = 241.889920000000000000
         Width = 718.110700000000000000
         object Memo2: TfrxMemoView
-          Width = 718.110236220472000000
+          Width = 718.110236220471900000
           Height = 22.677180000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText

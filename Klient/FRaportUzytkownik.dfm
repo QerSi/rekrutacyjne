@@ -90,8 +90,6 @@ object FRAportUzyt: TFRAportUzyt
     Color = clMoneyGreen
     ParentBackground = False
     TabOrder = 2
-    ExplicitLeft = -2
-    ExplicitWidth = 815
     object Label2: TLabel
       Left = 251
       Top = 40
@@ -115,7 +113,7 @@ object FRAportUzyt: TFRAportUzyt
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42963.028703588000000000
-    ReportOptions.LastChange = 42963.038155879630000000
+    ReportOptions.LastChange = 42963.038155879600000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       ''
@@ -386,7 +384,7 @@ object FRAportUzyt: TFRAportUzyt
           Style = 'Data'
         end
         object Memo15: TfrxMemoView
-          Top = 18.897650000000000000
+          Top = 18.897650000000030000
           Width = 127.000000000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -402,7 +400,7 @@ object FRAportUzyt: TFRAportUzyt
         end
         object Memo16: TfrxMemoView
           Left = 127.000000000000000000
-          Top = 18.897650000000000000
+          Top = 18.897650000000030000
           Width = 78.000000000000000000
           Height = 18.897650000000000000
           DataSet = frxdbuzytkownicy
@@ -418,7 +416,7 @@ object FRAportUzyt: TFRAportUzyt
           Style = 'Data'
         end
         object Memo9: TfrxMemoView
-          Top = 37.795300000000000000
+          Top = 37.795300000000030000
           Width = 127.000000000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -434,7 +432,7 @@ object FRAportUzyt: TFRAportUzyt
         end
         object Memo10: TfrxMemoView
           Left = 124.724490000000000000
-          Top = 37.795300000000000000
+          Top = 37.795300000000030000
           Width = 78.000000000000000000
           Height = 18.897650000000000000
           DataSet = frxdbuzytkownicy
@@ -515,7 +513,7 @@ object FRAportUzyt: TFRAportUzyt
         end
         object SysMemo1: TfrxSysMemoView
           Left = 3.779530000000000000
-          Top = 3.779530000000000000
+          Top = 3.779530000000022000
           Width = 245.669450000000000000
           Height = 22.677180000000000000
           Font.Charset = DEFAULT_CHARSET

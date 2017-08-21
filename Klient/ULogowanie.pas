@@ -75,7 +75,7 @@ begin
       end;
 
   end;
-  if not DataModule1.zqry.FieldByName('administrator').AsBoolean then
+  if (edtLogin.Text=DataModule1.zqry.FieldByName('login').AsString) and (not DataModule1.zqry.FieldByName('administrator').AsBoolean) then
   begin
     self.Przycisk('Konto nie ma uprawnieñ aby korzystaæ z tego programu',mtError);
   end

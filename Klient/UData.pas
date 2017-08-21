@@ -78,6 +78,9 @@ type
     intgrfldzqryrauziduzytkownicy: TIntegerField;
     intgrfld_zamowienia2: TIntegerField;
     fltfldzqryrauzsum: TFloatField;
+    zqryMaxnumer: TZQuery;
+    dsMaxnumer: TDataSource;
+    intgrfldMaxnumermax: TIntegerField;
   private
     { Private declarations }
   public

@@ -20,7 +20,8 @@ uses
   FUzytkownicy in 'FUzytkownicy.pas' {Uzytkownicy: TFrame},
   FRaportMsc in 'FRaportMsc.pas' {RaportMsc: TFrame},
   FRaportUzytkownik in 'FRaportUzytkownik.pas' {FRAportUzyt: TFrame},
-  FormBase in 'FormBase.pas';
+  FormBase in 'FormBase.pas',
+  UNoweZamowienie in 'UNoweZamowienie.pas' {NoweZamowienie};
 
 {$R *.res}
 

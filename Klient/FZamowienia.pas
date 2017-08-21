@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls,Zamowienie,FrameBase, Vcl.ExtCtrls;
+  Vcl.DBGrids, Vcl.StdCtrls,Zamowienie,FrameBase, Vcl.ExtCtrls,UNoweZamowienie,UData;
 
 type
   TZamowienia = class(TFrame)
@@ -13,20 +13,41 @@ type
     dbgrd1: TDBGrid;
     pnl2: TPanel;
     lbl4: TLabel;
+    btnDodaj: TButton;
     procedure btnSzczegolyClick(Sender: TObject);
+    procedure btnDodajClick(Sender: TObject);
 
    public
    constructor Create(wybraneZamowienie : TZamowienie); reintroduce; overload;
 
    private
     wybraneZamowienie : TZamowienie;
+    noweZamowienie : TNoweZamowienie;
   end;
 
 implementation
 
 {$R *.dfm}
 
-uses USzczegolyZamowienia, UData;
+uses USzczegolyZamowienia, UMain;
+
+procedure TZamowienia.btnDodajClick(Sender: TObject);
+begin
+  try
+    with DataModule1.zqry, SQL do
+    begin
+      Close;
+      Clear;
+      Add('Select * from uzytkownicy');
+      Open;
+    end;
+    noweZamowienie := TNoweZamowienie.Create(self);
+    noweZamowienie.ShowModal;
+  except
+    main.przycisk('B³¹d pocz³¹czenia z baz¹',mtError);
+  end;
+
+end;
 
 procedure TZamowienia.btnSzczegolyClick(Sender: TObject);
 begin

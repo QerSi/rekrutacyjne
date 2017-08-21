@@ -35,6 +35,8 @@ implementation
 
 {$R *.dfm}
 
+uses UMain;
+
 procedure TFRAportUzyt.btnGenerujClick(Sender: TObject);
   var id : Integer;
 begin
@@ -67,6 +69,7 @@ begin
     frxReportuzytkownicy.ShowReport(true);
   end;
   except
+    main.Przycisk('B³¹d',mtError);
   end;
 
 end;

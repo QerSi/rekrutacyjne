@@ -83,8 +83,7 @@ end;
 
 procedure TDodajPozycje.FormShow(Sender: TObject);
 begin
-  DodajPozycje.Top := SzczegolyZamowienia.Top + 20;
-  DodajPozycje.Left := SzczegolyZamowienia.Left + 20;
+
   edtIlosc.Text :='1';
   DataModule1.zqryprodukty.Refresh;
 end;

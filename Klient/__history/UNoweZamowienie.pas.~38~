@@ -1,0 +1,96 @@
+unit UNoweZamowienie;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.DBCtrls,
+  frxClass, frxDBSet, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls,UData, Vcl.Mask,Zamowienie,FormBase;
+
+type
+  TNoweZamowienie = class(TFormBase)
+    lbl1: TLabel;
+    lbl6: TLabel;
+    pnl1: TPanel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    dbgrd1: TDBGrid;
+    btnAnuluj: TButton;
+    btnUsunPozycje: TButton;
+    btnDodajPozycje: TButton;
+    cbbKlient: TComboBox;
+    edtLogin: TEdit;
+    edtImie: TEdit;
+    edtNazwisko: TEdit;
+    procedure FormShow(Sender: TObject);
+    procedure cbbKlientChange(Sender: TObject);
+    procedure btnDodajPozycjeClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  NoweZamowienie: TNoweZamowienie;
+  zamowienie : TZamowienie;
+implementation
+
+{$R *.dfm}
+
+uses UDodajPozycje;
+
+procedure TNoweZamowienie.btnDodajPozycjeClick(Sender: TObject);
+begin
+  DodajPozycje := TDodajPozycje.Create(zamowienie);
+  DodajPozycje.ShowModal;
+end;
+
+procedure TNoweZamowienie.cbbKlientChange(Sender: TObject);
+   var znak : integer;
+       tekst : string;
+begin
+  znak := Pos(':',cbbKlient.Text);
+  tekst := Copy(cbbKlient.Text,1,znak-1);
+  with DataModule1.zqry, SQL do
+  begin
+    Clear;
+    close;
+    Add('select * from uzytkownicy where login like :szukaj');
+    ParamByName('szukaj').Value := '%'+tekst+'%';
+    Open;
+  end;
+  zamowienie.iduzytkownicy := DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger;
+  edtLogin.Text := DataModule1.zqry.FieldByName('login').AsString;
+  edtImie.Text := DataModule1.zqry.FieldByName('imie').AsString;
+  edtNazwisko.Text := DataModule1.zqry.FieldByName('nazwisko').AsString;
+end;
+
+procedure TNoweZamowienie.FormShow(Sender: TObject);
+begin
+  cbbKlient.Items.Clear;
+  while not DataModule1.zqry.Eof  do
+  begin
+   cbbKlient.Items.Add(DataModule1.zqry.FieldByName('Login').AsString+': '+DataModule1.zqry.FieldByName('imie').AsString+' '+DataModule1.zqry.FieldByName('nazwisko').AsString);
+   DataModule1.zqry.Next;
+  end;
+  cbbKlient.ItemIndex:=-1;
+  zamowienie := TZamowienie.Create(DateToStr(date),0,0,0,1 + Random(1000000));
+    try
+    with DataModule1.zqryszczegoly, SQL do
+    begin
+      Close;
+      Clear;
+      Add('select data_zamowienia,numer_zamowienia,produkty.nazwa, produkty.idprodukty, produkty.cena, COUNT(zamowienia.idprodukty),Sum(cena),imie,nazwisko From produkty,zamowienia,uzytkownicy WHERE zamowienia.idprodukty=produkty.idprodukty AND');
+      Add('  zamowienia.numer_zamowienia=:numer and zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy GROUP BY produkty.nazwa, produkty.cena,produkty.idprodukty,imie,nazwisko,numer_zamowienia,data_zamowienia');
+      ParamByName('numer').AsInteger := Zamowienie.numer_zamowienia;
+      Open;
+    end;
+
+  except
+    Przycisk('B³¹d po³¹czenia z baza',mtError);
+  end;
+end;
+
+end.
