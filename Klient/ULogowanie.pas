@@ -5,10 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids, UData, Uzytkownik,
-  Vcl.StdCtrls, Vcl.Imaging.jpeg, Vcl.ExtCtrls, Vcl.Imaging.pngimage,System.IniFiles;
+  Vcl.StdCtrls, Vcl.Imaging.jpeg, Vcl.ExtCtrls, Vcl.Imaging.pngimage,System.IniFiles,FormBase;
 
 type
-  TLogowanie = class(TForm)
+  TLogowanie = class(TFormBase)
     edtLogin: TEdit;
     edtHaslo: TEdit;
     btnLogin: TButton;
@@ -23,11 +23,9 @@ type
     procedure btnAnulujClick(Sender: TObject);
     procedure edtHasloKeyPress(Sender: TObject; var Key: Char);
     procedure edtLoginKeyPress(Sender: TObject; var Key: Char);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
-    //iduzytkownicy : Integer;
   end;
 
 var
@@ -65,15 +63,23 @@ begin
 
   with DataModule1.zqry, SQL do
   begin
-      Close;
-      Clear;
-      Add('SELECT * from public.uzytkownicy where login=:login and haslo=:haslo');
-      ParamByName('login').AsString:=edtLogin.Text;
-      ParamByName('haslo').AsString:=edtHaslo.Text;
-      Open;
-  end;
+      try
+        Close;
+        Clear;
+        Add('SELECT * from public.uzytkownicy where login=:login and haslo=:haslo');
+        ParamByName('login').AsString:=edtLogin.Text;
+        ParamByName('haslo').AsString:=edtHaslo.Text;
+        Open;
+      except
+      self.Przycisk('B³¹d po³¹czenia z baz¹',mtError);
+      end;
 
-  if edtLogin.Text=DataModule1.zqry.FieldByName('login').AsString then
+  end;
+  if not DataModule1.zqry.FieldByName('administrator').AsBoolean then
+  begin
+    self.Przycisk('Konto nie ma uprawnieñ aby korzystaæ z tego programu',mtError);
+  end
+  else if edtLogin.Text=DataModule1.zqry.FieldByName('login').AsString then
     begin
      
       Main.mmglowne.Items[0][0].Enabled := True;
@@ -88,7 +94,7 @@ begin
     end
   else
   begin
-    ShowMessage('B³¹d');
+    self.Przycisk('B³¹d logowania',mtError);
   end;
 
 end;
@@ -139,11 +145,6 @@ begin
  Key:=#0;
 end;
 
-end;
-
-procedure TLogowanie.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-//Action := TCloseAction.caFree;
 end;
 
 end.

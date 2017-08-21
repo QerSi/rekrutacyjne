@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls,UData,DateUtils;
+  Vcl.DBGrids, Vcl.StdCtrls,UData,DateUtils, Vcl.ExtCtrls, frxClass, frxDBSet,FrameBase;
 
 type
   TRaportMsc = class(TFrame)
@@ -13,6 +13,15 @@ type
     edtMiesiac: TEdit;
     edtRok: TEdit;
     dbgrd1: TDBGrid;
+    pnl1: TPanel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    frxRaportMsc: TfrxReport;
+    frxdbRaportMsc: TfrxDBDataset;
+    chkAnulowane: TCheckBox;
+    lbl1: TLabel;
+    pnl2: TPanel;
+    lbl4: TLabel;
     procedure edtRokExit(Sender: TObject);
     procedure btnGenerujClick(Sender: TObject);
   private
@@ -38,19 +47,24 @@ begin
     edtMiesiac.Text := IntToStr(MonthOf(Date));
     miesiac :=  StrToInt(edtMiesiac.Text);
   end;
-  datakon := EndOfAMonth(2017, 8);
+  datakon := EndOfAMonth(rok, miesiac);
   datapocz := StartOfAMonth(rok, miesiac);
   with DataModule1.zqryRaportMsc, SQL do
   begin
     Close;
     Clear;
-    Add('select login,imie,nazwisko,numer_zamowienia,data_zamowienia, SUM(produkty.cena) ');
-    Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia >=:datapocz AND data_zamowienia <=:datakon AND zamowienia.idprodukty=produkty.idprodukty ');
-    Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia');
+    Add('select distinct on(numer_zamowienia) login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy,zamowienia.iduzytkownicy, SUM(produkty.cena) ');
+    Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia >=:datapocz AND data_zamowienia <=:datakon AND zamowienia.idprodukty=produkty.idprodukty AND zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy ');
+    if chkAnulowane.Checked = False then
+    begin
+      Add('AND idstatusy != 3 ');
+    end;
+    Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy,zamowienia.iduzytkownicy');
     ParamByName('datapocz').AsString := FormatDateTime('yyy-mm-dd', datapocz);
     ParamByName('datakon').AsString := FormatDateTime('yyy-mm-dd', datakon);
     Open;
   end;
+    frxRaportMsc.ShowReport(true);
 end;
 
 procedure TRaportMsc.edtRokExit(Sender: TObject);

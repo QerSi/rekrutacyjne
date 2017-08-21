@@ -4,10 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Uzytkownik;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Uzytkownik,FormBase;
 
 type
-  TNowyUzytkownik = class(TForm)
+  TNowyUzytkownik = class(TFormBase)
     edtLogin: TEdit;
     edtimie: TEdit;
     edtnazwisko: TEdit;
@@ -58,28 +58,10 @@ begin
         Add('SELECT * from public.uzytkownicy ORDER BY login');
         Open;
     end;
-    with CreateMessageDialog('U¿ytkownik dodany',  mtConfirmation, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-
-    end;
+    self.Przycisk('U¿ytkownik dodany',  mtConfirmation);
     Self.Close;
   except
-    with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
-
+    Przycisk('B³¹d podczas dodawania', mtError);
   end;
 
 end;

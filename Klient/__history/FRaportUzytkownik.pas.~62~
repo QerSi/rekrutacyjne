@@ -1,0 +1,106 @@
+unit FRaportUzytkownik;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,UData,
+  Data.DB, Vcl.Grids, Vcl.DBGrids,DateUtils, frxClass, frxDBSet,FrameBase;
+
+type
+  TFRAportUzyt = class(TFrame)
+    pnl1: TPanel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    edtMiesiac: TEdit;
+    edtRok: TEdit;
+    btnGeneruj: TButton;
+    dbgrd1: TDBGrid;
+    Label1: TLabel;
+    lbl1: TLabel;
+    Panel1: TPanel;
+    Label2: TLabel;
+    frxReportuz: TfrxReport;
+    procedure btnGenerujClick(Sender: TObject);
+    procedure edtRokExit(Sender: TObject);
+    procedure edtMiesiacExit(Sender: TObject);
+  private
+    miesiac,rok : Integer;
+    datakon, datapocz : TDate;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFRAportUzyt.btnGenerujClick(Sender: TObject);
+  var id : Integer;
+begin
+  id := DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger;
+  if edtRok.Text='' then
+  begin
+    edtRok.Text := IntToStr(YearOf(Date));
+    rok :=  StrToInt(edtRok.Text);
+  end;
+  if edtMiesiac.Text='' then
+  begin
+    edtMiesiac.Text := IntToStr(MonthOf(Date));
+    miesiac :=  StrToInt(edtMiesiac.Text);
+  end;
+  datakon := EndOfAMonth(rok, miesiac);
+  datapocz := StartOfAMonth(rok, miesiac);
+  with DataModule1.zqryRaportMsc, SQL do
+
+  try
+   begin
+    Close;
+    Clear;
+    Add('select login,imie,nazwisko,data_zamowienia,idstatusy,zamowienia.iduzytkownicy,numer_zamowienia, SUM(produkty.cena) ');
+    Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia >=:datapocz AND data_zamowienia <=:datakon AND zamowienia.idprodukty=produkty.idprodukty AND zamowienia.iduzytkownicy=:idu AND zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy ');
+    Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy,zamowienia.iduzytkownicy');
+    ParamByName('idu').AsInteger :=  id;
+    ParamByName('datapocz').AsString := FormatDateTime('yyy-mm-dd', datapocz);
+    ParamByName('datakon').AsString := FormatDateTime('yyy-mm-dd', datakon);
+    Open;
+    frxReportuz.ShowReport(true);
+  end;
+  except
+  end;
+
+end;
+
+procedure TFRAportUzyt.edtMiesiacExit(Sender: TObject);
+var dl:Integer;
+begin
+begin
+  dl := Length(edtMiesiac.Text);
+  if (dl<4) or (edtMiesiac.Text='') or (StrToInt(edtMiesiac.Text)>MonthOf(Date))  then
+  begin
+    edtMiesiac.Text := IntToStr(MonthOf(Date));
+    miesiac :=  StrToInt(edtMiesiac.Text);
+  end
+  else
+  begin
+    miesiac :=  StrToInt(edtMiesiac.Text);
+  end;
+end;
+end;
+
+procedure TFRAportUzyt.edtRokExit(Sender: TObject);
+var dl:Integer;
+begin
+  dl := Length(edtRok.Text);
+  if (dl<4) or (edtRok.Text='') or (StrToInt(edtRok.Text)>YearOf(Date))  then
+  begin
+    edtRok.Text := IntToStr(YearOf(Date));
+    rok :=  StrToInt(edtRok.Text);
+  end
+  else
+  begin
+    rok :=  StrToInt(edtRok.Text);
+  end;
+end;
+
+end.

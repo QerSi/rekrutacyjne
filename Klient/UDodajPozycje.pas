@@ -5,10 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids,
-  Vcl.DBGrids,UData, Vcl.DBCtrls, USzczegolyZamowienia, Pozycja,Zamowienie;
+  Vcl.DBGrids,UData, Vcl.DBCtrls, USzczegolyZamowienia, Pozycja,Zamowienie,FormBase;
 
 type
-  TDodajPozycje = class(TForm)
+  TDodajPozycje = class(TFormBase)
     dbgrd: TDBGrid;
     lbl1: TLabel;
     edtIlosc: TEdit;
@@ -55,41 +55,21 @@ end;
 procedure TDodajPozycje.btnDodajClick(Sender: TObject);
 begin
 try
-  DodajPozycje.Enabled := False;
-
+ DodajPozycje.Enabled := False;
  wybranaPozycja:= TPozycja.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,StrToInt(edtIlosc.Text));
  wybraneZamowienie.Insert(wybranaPozycja);
-
- with CreateMessageDialog('Dodawanie zakoñczone sukcesem', mtConfirmation, [mbOK],  mbOK ) do
-  try
-    Position := poDesigned;
-    Left:=Self.Left+(Self.Width-Width) Div 2;
-    Top:=Self.Top+(Self.Height-Height) Div 2;
-    ShowModal
-  finally
-    Free
-  end;
-  DodajPozycje.Enabled := True;
+ Przycisk('Dodawanie zakoñczone sukcesem', mtConfirmation);
+ DodajPozycje.Enabled := True;
  self.Close;
  DataModule1.zqryszczegoly.Refresh;
 except
   DodajPozycje.Enabled := True;
-  with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
-  try
-    Position := poDesigned;
-    Left:=Self.Left+(Self.Width-Width) Div 2;
-    Top:=Self.Top+(Self.Height-Height) Div 2;
-    ShowModal
-  finally
-    Free
-  end;
+  Przycisk('B³¹d', mtError);
 end;
-
 end;
 
 procedure TDodajPozycje.edtIloscChange(Sender: TObject);
 begin
-
   if (edtIlosc.Text<>'') and (StrToInt(edtIlosc.Text)<1) then
   begin
     edtIlosc.Text := '1';
@@ -106,14 +86,7 @@ begin
   DodajPozycje.Top := SzczegolyZamowienia.Top + 20;
   DodajPozycje.Left := SzczegolyZamowienia.Left + 20;
   edtIlosc.Text :='1';
-  with DataModule1.zqryprodukty, SQL do
-  begin
-      Close;
-      Clear;
-      Add('SELECT * from public.produkty ORDER BY nazwa');
-      Open;
-      First;
-  end;
+  DataModule1.zqryprodukty.Refresh;
 end;
 
 end.

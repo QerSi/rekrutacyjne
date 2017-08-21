@@ -1,0 +1,113 @@
+unit UNowyUzytkownik;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Uzytkownik,FormBase;
+
+type
+  TNowyUzytkownik = class(TFormBase)
+    edtLogin: TEdit;
+    edtimie: TEdit;
+    edtnazwisko: TEdit;
+    edthaslo: TEdit;
+    chkadministrator: TCheckBox;
+    btndodaj: TButton;
+    btnanuluj: TButton;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    lbl4: TLabel;
+    lbl5: TLabel;
+    procedure btndodajClick(Sender: TObject);
+    procedure btnanulujClick(Sender: TObject);
+    procedure edtLoginChange(Sender: TObject);
+    procedure edthasloChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  NowyUzytkownik: TNowyUzytkownik;
+
+implementation
+
+{$R *.dfm}
+
+uses UData,UMain;
+
+procedure TNowyUzytkownik.btnanulujClick(Sender: TObject);
+begin
+self.Close;
+end;
+
+procedure TNowyUzytkownik.btndodajClick(Sender: TObject);
+var uzytkownik : TUzytkownik;
+begin
+  Uzytkownik := TUzytkownik.Create(0,Trim(edtLogin.Text),Trim(edthaslo.Text),Trim(edtimie.Text),Trim(edtnazwisko.Text),chkadministrator.checked,0);
+  try
+    uzytkownik.insert;
+    with DataModule1.zqry, SQL do
+    begin
+        Close;
+        Clear;
+        Add('SELECT * from public.uzytkownicy ORDER BY login');
+        Open;
+    end;
+    with CreateMessageDialog('U¿ytkownik dodany',  mtConfirmation, [mbOK],  mbOK ) do
+    try
+      Position := poDesigned;
+      Left:=Self.Left+(Self.Width-Width) Div 2;
+      Top:=Self.Top+(Self.Height-Height) Div 2;
+      ShowModal
+    finally
+      Free
+
+    end;
+    Self.Close;
+  except
+    with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
+    try
+      Position := poDesigned;
+      Left:=Self.Left+(Self.Width-Width) Div 2;
+      Top:=Self.Top+(Self.Height-Height) Div 2;
+      ShowModal
+    finally
+      Free
+    end;
+
+  end;
+
+end;
+
+procedure TNowyUzytkownik.edthasloChange(Sender: TObject);
+begin
+ if (edtLogin.Text='') or (edthaslo.Text='') then
+ begin
+   btndodaj.Enabled:=False;
+ end
+ else
+ btndodaj.Enabled:=True;
+end;
+
+procedure TNowyUzytkownik.edtLoginChange(Sender: TObject);
+begin
+ if (edtLogin.Text='') or (edthaslo.Text='') then
+ begin
+   btndodaj.Enabled:=False;
+ end
+ else
+ btndodaj.Enabled:=True;
+end;
+
+procedure TNowyUzytkownik.FormShow(Sender: TObject);
+begin
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
+end;
+
+end.

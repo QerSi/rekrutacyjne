@@ -4,10 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,Produkt;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,Produkt,FormBase;
 
 type
-  TEdytujProdukt = class(TForm)
+  TEdytujProdukt = class(TFormBase)
     lbl1: TLabel;
     lbl2: TLabel;
     lbl4: TLabel;
@@ -59,54 +59,20 @@ begin
     cenad := strtofloat(edtcena.Text);
      try
     wybranyProdukt.cena := cenad;
+     wybranyProdukt.nazwa := Trim(edtNazwa.Text);
+    wybranyProdukt.opis := Trim(mmoOpis.Text);
     wybranyProdukt.update;
-    with CreateMessageDialog('Zmiany zapisane',  mtConfirmation, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-
-    end;
+    Przycisk('Zmiany zapisane',  mtConfirmation);
     Close;
   except
-    with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
+    Przycisk('B³¹d', mtError);
   end;
   except
-    on E: EConvertError do
-    begin
-      with CreateMessageDialog('Nieprawid³owa cena Wzór: 10,10', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
-    end;
+    Przycisk('Nieprawid³owa cena Wzór: 10,10', mtError);
   end;
- wybranyProdukt.nazwa := Trim(edtNazwa.Text);
- wybranyProdukt.cena := cenad;
- wybranyProdukt.opis := Trim(mmoOpis.Text);
- 
-  with DataModule1.zqryprodukty, SQL do
-    begin
-        Close;
-        Clear;
-        Add('SELECT * from public.produkty ORDER BY nazwa');
-        Open;
-    end;
+
+ DataModule1.zqryprodukty.Refresh
+
 end;
 
 procedure TEdytujProdukt.edtcenaChange(Sender: TObject);

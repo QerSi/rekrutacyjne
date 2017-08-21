@@ -4,10 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,Uzytkownik;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,Uzytkownik,FormBase;
 
 type
-  TEdytujUzytkownika = class(TForm)
+  TEdytujUzytkownika = class(TFormBase)
     lbl1: TLabel;
     lbl2: TLabel;
     lbl3: TLabel;
@@ -74,35 +74,12 @@ begin
 
   try
     wybranyUzytkownik.update;
-    with CreateMessageDialog('Zamiany zosta³y zapisane',  mtConfirmation, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-
-    end;
+    Self.Przycisk('Zmiany zosta³y zapisane',mtConfirmation);
     self.Close;
   except
-    with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
+    self.Przycisk('B³¹d zapisu danych',mtError);
   end;
-  with DataModule1.zqry, SQL do
-    begin
-        Close;
-        Clear;
-        Add('SELECT * from public.uzytkownicy ORDER BY login');
-        Open;
-    end;
+  DataModule1.zqry.Refresh;
 
 end;
 

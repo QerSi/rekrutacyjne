@@ -5,17 +5,17 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids,
-  Vcl.DBGrids, Vcl.StdCtrls,Zamowienie;
+  Vcl.DBGrids, Vcl.StdCtrls,Zamowienie,FrameBase, Vcl.ExtCtrls;
 
 type
   TZamowienia = class(TFrame)
-    lbl5: TLabel;
     btnSzczegoly: TButton;
     dbgrd1: TDBGrid;
+    pnl2: TPanel;
+    lbl4: TLabel;
     procedure btnSzczegolyClick(Sender: TObject);
 
    public
-   constructor Create(AOwner: TComponent); reintroduce; overload;
    constructor Create(wybraneZamowienie : TZamowienie); reintroduce; overload;
 
    private
@@ -35,14 +35,10 @@ begin
   SzczegolyZamowienia.ShowModal;
 end;
 
-constructor TZamowienia.Create(AOwner: TComponent);
-begin
-inherited;
-end;
+
 
 constructor TZamowienia.Create(wybraneZamowienie : TZamowienie);
 begin
 Self.wybraneZamowienie := wybraneZamowienie;
 end;
-
 end.

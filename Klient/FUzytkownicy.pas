@@ -5,17 +5,18 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, UData, Vcl.StdCtrls, Uzytkownik, System.Generics.Collections, UNowyUzytkownik,
-  Data.DB, Vcl.DBGrids;
+  Data.DB, Vcl.DBGrids,FrameBase, Vcl.ExtCtrls;
 
 type
   TUzytkownicy = class(TFrame)
-    lbl1: TLabel;
     lbl2: TLabel;
     dbgrd1: TDBGrid;
     btnDodaj: TButton;
     btnUsun: TButton;
     btnEdytuj: TButton;
     edtszukaj: TEdit;
+    pnl1: TPanel;
+    lbl1: TLabel;
     procedure btnDodajClick(Sender: TObject);
     procedure btnEdytujClick(Sender: TObject);
     procedure btnUsunClick(Sender: TObject);
@@ -25,7 +26,6 @@ type
     wybranyUzytkownik : TUzytkownik;
     uzzalogowany : TUzytkownik;
   public
-
 
   end;
 
@@ -58,16 +58,7 @@ begin
   wybranyUzytkownik := TUzytkownik.Create(DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqry.FieldByName('login').AsString,DataModule1.zqry.FieldByName('haslo').AsString,DataModule1.zqry.FieldByName('imie').AsString,DataModule1.zqry.FieldByName('nazwisko').AsString,DataModule1.zqry.FieldByName('administrator').AsBoolean,DataModule1.zqry.FieldByName('liczba_zamowien').AsInteger);
   if wybranyUzytkownik.iduzytkownicy = uzzalogowany.iduzytkownicy then
   begin
-  with CreateMessageDialog('Nie mo¿esz usun¹æ w³asnego konta',  mtInformation, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-
-    end;
+    //////Self.Przycisk('nie mozna usun¹æ w³asnego konta',mtInformation);
   end
   else
   begin

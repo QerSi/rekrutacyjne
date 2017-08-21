@@ -18,7 +18,9 @@ uses
   FZamowienia in 'FZamowienia.pas' {Zamowienia: TFrame},
   Zamowienie in 'Zamowienie.pas',
   FUzytkownicy in 'FUzytkownicy.pas' {Uzytkownicy: TFrame},
-  FRaportMsc in 'FRaportMsc.pas' {RaportMsc: TFrame};
+  FRaportMsc in 'FRaportMsc.pas' {RaportMsc: TFrame},
+  FRaportUzytkownik in 'FRaportUzytkownik.pas' {FRAportUzyt: TFrame},
+  FormBase in 'FormBase.pas';
 
 {$R *.res}
 

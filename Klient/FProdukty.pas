@@ -5,17 +5,18 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls,
-  Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls;
+  Vcl.DBCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls,FrameBase;
 
 type
   TFrame2 = class(TFrame)
-    lbl3: TLabel;
     lbl4: TLabel;
     btnProduktyDodaj: TButton;
     btnProduktyUsun: TButton;
     btnProduktyEdytuj: TButton;
     dbgrdProdukty: TDBGrid;
     dbmmoopis: TDBMemo;
+    pnl1: TPanel;
+    lbl1: TLabel;
     procedure btnProduktyDodajClick(Sender: TObject);
     procedure btnProduktyEdytujClick(Sender: TObject);
     procedure btnProduktyUsunClick(Sender: TObject);
@@ -42,7 +43,7 @@ end;
 
 procedure TFrame2.btnProduktyEdytujClick(Sender: TObject);
 begin
-   wybranyProdukt := TProdukt.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,DataModule1.zqryprodukty.FieldByName('opis').AsString);
+  wybranyProdukt := TProdukt.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,DataModule1.zqryprodukty.FieldByName('opis').AsString);
   EdytujProdukt := TEdytujProdukt.Create(wybranyProdukt);
   EdytujProdukt.ShowModal;
 end;
@@ -57,9 +58,9 @@ begin
     begin
       try
       wybranyProdukt.Delete;      
-      ShowMessage('Produkt zosta³ usuniêty');
+        /////////////self.Przycisk('Produkt zosta³ usuniêty',mtConfirmation);
       except
-        ShowMessage('B³¹d podczas usuwania');
+        /////////////////////////Self.Przycisk('B³¹d podczas usuwania',mtError);
       end;
     end;
     with DataModule1.zqryprodukty, SQL do

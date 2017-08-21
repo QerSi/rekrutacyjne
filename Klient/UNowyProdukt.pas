@@ -4,10 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,FormBase;
 
 type
-  TNowyProdukt = class(TForm)
+  TNowyProdukt = class(TFormBase)
     lbl1: TLabel;
     lbl2: TLabel;
     lbl4: TLabel;
@@ -58,40 +58,15 @@ begin
           Add('SELECT * from public.produkty ORDER BY nazwa');
           Open;
       end;
-      with CreateMessageDialog('Produkt dodany',  mtConfirmation, [mbOK],  mbOK ) do
-      try
-        Position := poDesigned;
-        Left:=Self.Left+(Self.Width-Width) Div 2;
-        Top:=Self.Top+(Self.Height-Height) Div 2;
-        ShowModal
-      finally
-        Free
-
-      end;
+      Przycisk('Produkt dodany',  mtConfirmation);
       Self.Close;
     except
-      with CreateMessageDialog('B³¹d', mtError, [mbOK],  mbOK ) do
-      try
-        Position := poDesigned;
-        Left:=Self.Left+(Self.Width-Width) Div 2;
-        Top:=Self.Top+(Self.Height-Height) Div 2;
-        ShowModal
-      finally
-        Free
-      end;
+     Przycisk('B³¹d podczas dodawania', mtError);
     end;
   except
     on E: EConvertError do
     begin
-      with CreateMessageDialog('Nieprawid³owa cena. Wzór: 10,10', mtError, [mbOK],  mbOK ) do
-    try
-      Position := poDesigned;
-      Left:=Self.Left+(Self.Width-Width) Div 2;
-      Top:=Self.Top+(Self.Height-Height) Div 2;
-      ShowModal
-    finally
-      Free
-    end;
+    Przycisk('Nieprawid³owa cena. Wzór: 10,10', mtError);
     end;
   end;
 end;

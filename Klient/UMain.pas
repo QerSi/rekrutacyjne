@@ -6,10 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, System.IniFiles,Vcl.ExtCtrls, Data.DB, Vcl.StdCtrls,
   Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, UData,Uzytkownik,ULogowanie,
-  Produkt,Zamowienie,FZamowienia,FProdukty,FUzytkownicy,FRaportMsc;
+  Produkt,Zamowienie,FZamowienia,FProdukty,FUzytkownicy,FRaportMsc,FRaportUzytkownik,FormBase;
 
 type
-  TMain = class(TForm)
+  TMain = class(TFormBase)
     mmglowne: TMainMenu;
     Program1: TMenuItem;
     Wyloguj1: TMenuItem;
@@ -29,6 +29,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure RaportmiesicznyClick(Sender: TObject);
+    procedure Zamwienieuytkownika1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,6 +38,7 @@ type
     Fuzytkownicy : TUzytkownicy;
     FRapMsc : TRaportMsc;
     uzzalogowany : Tuzytkownik;
+    FRapUz : TFRAportUzyt;
   end;
 
 var
@@ -76,6 +78,7 @@ end;
 
 procedure TMain.Produkty1Click(Sender: TObject);
 begin
+ try
   with DataModule1.zqryprodukty, SQL do
   begin
       Close;
@@ -84,33 +87,40 @@ begin
       Open;
       First;
   end;
-    FProdukty.Free;
-    FProdukty := TFrame2.Create(self);
-    FProdukty.Parent:= pnlGlowny;
-    FProdukty.Align:= alClient;
-
-
+  FProdukty.Free;
+  FProdukty := TFrame2.Create(self);
+  FProdukty.Parent:= pnlGlowny;
+  FProdukty.Align:= alClient;
+ except
+    self.Przycisk('B³¹d po³¹czenia z baz¹',mtError);
+ end;
 end;
 
 procedure TMain.RaportmiesicznyClick(Sender: TObject);
 begin
-      with DataModule1.zqryRaportMsc, SQL do
-      begin
-        Close;
-        Clear;
-        Add('select login,imie,nazwisko,numer_zamowienia,data_zamowienia, SUM(produkty.cena) ');
-        Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia <'+QuotedStr('2017-12-12')+'AND zamowienia.idprodukty=produkty.idprodukty ');
-        Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia');
-        Open;
-      end;
-      FRapMsc.Free;
-      FRapMsc := TRaportMsc.Create(self);
-      FRapMsc.Parent:= pnlGlowny;
-      FRapMsc.Align:= alClient;
+  try
+     with DataModule1.zqryRaportMsc, SQL do
+    begin
+      Close;
+      Clear;
+      Add('select login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy, SUM(produkty.cena) ');
+      Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia <'+QuotedStr('2017-12-12')+'AND zamowienia.idprodukty=produkty.idprodukty AND zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy');
+      Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy');
+      Open;
+    end;
+    FRapMsc.Free;
+    FRapMsc := TRaportMsc.Create(self);
+    FRapMsc.Parent:= pnlGlowny;
+    FRapMsc.Align:= alClient;
+  except
+      self.Przycisk('B³¹d po³¹czenia z baz¹',mtError);
+  end;
 end;
 
 procedure TMain.Uzytkownicy1Click(Sender: TObject);
 begin
+
+try
   with DataModule1.zqry, SQL do
   begin
       Close;
@@ -119,11 +129,14 @@ begin
       Open;
       First;
   end;
-      Fuzytkownicy.Free;
-      Fuzytkownicy := TUzytkownicy.Create(uzzalogowany);
-      Fuzytkownicy.setUZalogowany(uzzalogowany);
-      Fuzytkownicy.Parent:= pnlGlowny;
-      Fuzytkownicy.Align:= alClient;
+  Fuzytkownicy.Free;
+  Fuzytkownicy := TUzytkownicy.Create(uzzalogowany);
+  Fuzytkownicy.setUZalogowany(uzzalogowany);
+  Fuzytkownicy.Parent:= pnlGlowny;
+  Fuzytkownicy.Align:= alClient; 
+except
+    self.Przycisk('B³¹d po³¹czenia z baz¹',mtError);
+end;
 
 
 end;
@@ -143,19 +156,43 @@ end;
 
 procedure TMain.Zamownia1Click(Sender: TObject);
 begin
-   with DataModule1.zqryzam, SQL do
-    begin
-      Close;
-      Clear;
-      Add('select distinct on (z.numer_zamowienia) z.idzamowienia, z.idprodukty, z.iduzytkownicy, z.idstatusy, z.numer_zamowienia,z.data_zamowienia,u.login,u.imie,u.nazwisko,s.idstatusy,s.status,p.nazwa,p.cena,p.idprodukty'
-      +' FROM zamowienia AS z,statusy AS s,uzytkownicy AS u,produkty AS p'
-      +' WHERE z.iduzytkownicy=u.iduzytkownicy AND z.idstatusy = s.idstatusy AND z.idprodukty = p.idprodukty');
-      Open;
-    end;
+  try
+     with DataModule1.zqryzam, SQL do
+      begin
+        Close;
+        Clear;
+        Add('select distinct on (z.numer_zamowienia) z.idzamowienia, z.idprodukty, z.iduzytkownicy, z.idstatusy, z.numer_zamowienia,z.data_zamowienia,u.login,u.imie,u.nazwisko,s.idstatusy,s.status,p.nazwa,p.cena,p.idprodukty'
+        +' FROM zamowienia AS z,statusy AS s,uzytkownicy AS u,produkty AS p'
+        +' WHERE z.iduzytkownicy=u.iduzytkownicy AND z.idstatusy = s.idstatusy AND z.idprodukty = p.idprodukty');
+        Open;
+      end;
       FZamowienia.Free;
       FZamowienia := TZamowienia.Create(pnlGlowny);
       FZamowienia.Parent:= pnlGlowny;
       FZamowienia.Align:= alClient;
+  except
+    self.Przycisk('B³¹d po³¹czenia z baz¹',mtError);
+  end;
+end;
+
+procedure TMain.Zamwienieuytkownika1Click(Sender: TObject);
+begin
+  try
+    with DataModule1.zqry, SQL do
+    begin
+        Close;
+        Clear;
+        Add('SELECT * from public.uzytkownicy');
+        Open;
+    end;
+
+  except
+    self.Przycisk('B³¹d po³¹czenia z baz¹',mtError);
+  end;
+      FRapUz.Free;
+    FRapUz := TFRAportUzyt.Create(pnlGlowny);
+    FRapUz.Parent:= pnlGlowny;
+    FRapUz.Align:= alClient;
 end;
 
 end.

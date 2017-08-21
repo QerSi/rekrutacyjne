@@ -7,7 +7,7 @@ object Logowanie: TLogowanie
   Caption = 'Logowanie'
   ClientHeight = 309
   ClientWidth = 444
-  Color = clBtnFace
+  Color = cl3DLight
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -18,53 +18,54 @@ object Logowanie: TLogowanie
   ParentBiDiMode = False
   Position = poDesktopCenter
   Visible = True
-  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object lbl1: TLabel
     Left = 104
     Top = 8
-    Width = 190
+    Width = 220
     Height = 23
     Caption = 'Logowanie do systemu'
+    Color = clMoneyGreen
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clOlive
     Font.Height = -19
     Font.Name = 'Tahoma'
-    Font.Style = []
+    Font.Style = [fsBold]
+    ParentColor = False
     ParentFont = False
   end
   object lbl2: TLabel
     Left = 8
-    Top = 40
-    Width = 30
+    Top = 53
+    Width = 34
     Height = 32
     Caption = 'Login'#13#10
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Tahoma'
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object lbl3: TLabel
     Left = 8
     Top = 112
-    Width = 32
+    Width = 36
     Height = 16
     Caption = 'Has'#322'o'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Tahoma'
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object img1: TImage
-    Left = 240
-    Top = 52
-    Width = 169
-    Height = 165
+    Left = 232
+    Top = 53
+    Width = 193
+    Height = 188
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D49484452000001000000
       010008060000005C72A866000055394944415478DAEDBD079CDCD675EF7F004C
