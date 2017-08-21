@@ -43,9 +43,13 @@ end;
 
 procedure TFrame2.btnProduktyEdytujClick(Sender: TObject);
 begin
+   if DataModule1.zqryprodukty.RecordCount<>0 then
+  begin
   wybranyProdukt := TProdukt.Create(DataModule1.zqryprodukty.FieldByName('idprodukty').AsInteger,DataModule1.zqryprodukty.FieldByName('nazwa').AsString,DataModule1.zqryprodukty.FieldByName('cena').AsFloat,DataModule1.zqryprodukty.FieldByName('opis').AsString);
   EdytujProdukt := TEdytujProdukt.Create(wybranyProdukt);
   EdytujProdukt.ShowModal;
+  end;
+
 end;
 
 procedure TFrame2.btnProduktyUsunClick(Sender: TObject);

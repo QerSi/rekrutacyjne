@@ -36,6 +36,8 @@ implementation
 
 {$R *.dfm}
 
+uses UMain;
+
 constructor TDodajPozycje.Create(AOwner: TComponent);
 begin
 inherited;
@@ -83,7 +85,8 @@ end;
 
 procedure TDodajPozycje.FormShow(Sender: TObject);
 begin
-
+  Left := Main.Left + (Main.Width - Width) div 2;
+  Top := Main.Top + (Main.Height - Height) div 2;
   edtIlosc.Text :='1';
   DataModule1.zqryprodukty.Refresh;
 end;

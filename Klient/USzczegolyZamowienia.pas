@@ -259,6 +259,7 @@ begin
   edtNazwisko.Text := DataModule1.zqryzam.FieldByName('nazwisko').AsString;
   edtData.Text := DataModule1.zqryzam.FieldByName('data_zamowienia').AsString;
   edtStatus.Text := DataModule1.zqryzam.FieldByName('status').AsString;
+
 end;
 
 procedure TSzczegolyZamowienia.btnPotwierdzUsunClick(Sender: TObject);

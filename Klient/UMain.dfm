@@ -2,7 +2,7 @@ object Main: TMain
   Left = 0
   Top = 0
   Caption = 'Zarz'#261'dzanie zam'#243'wniami'
-  ClientHeight = 541
+  ClientHeight = 521
   ClientWidth = 797
   Color = clBtnFace
   Constraints.MinHeight = 500
@@ -23,16 +23,14 @@ object Main: TMain
     Left = 0
     Top = 0
     Width = 797
-    Height = 541
+    Height = 521
     Align = alClient
     AutoSize = True
     TabOrder = 0
-    ExplicitTop = -1
-    ExplicitWidth = 992
   end
   object mmglowne: TMainMenu
     Left = 40
-    Top = 496
+    Top = 416
     object Program1: TMenuItem
       Caption = 'Program'
       object Wyloguj1: TMenuItem

@@ -51,9 +51,13 @@ end;
 
 procedure TZamowienia.btnSzczegolyClick(Sender: TObject);
 begin
-  wybraneZamowienie := TZamowienie.Create(DataModule1.zqryzam.FieldByName('data_zamowienia').AsString,DataModule1.zqryzam.FieldByName('idzamowienia').AsInteger,DataModule1.zqryzam.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqryzam.FieldByName('idstatusy').AsInteger,DataModule1.zqryzam.FieldByName('numer_zamowienia').AsInteger);
-  SzczegolyZamowienia := TSzczegolyZamowienia.Create(wybraneZamowienie);
-  SzczegolyZamowienia.ShowModal;
+  if DataModule1.zqryzam.RecordCount<>0 then
+  begin
+    wybraneZamowienie := TZamowienie.Create(DataModule1.zqryzam.FieldByName('data_zamowienia').AsString,DataModule1.zqryzam.FieldByName('idzamowienia').AsInteger,DataModule1.zqryzam.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqryzam.FieldByName('idstatusy').AsInteger,DataModule1.zqryzam.FieldByName('numer_zamowienia').AsInteger);
+    SzczegolyZamowienia := TSzczegolyZamowienia.Create(wybraneZamowienie);
+    SzczegolyZamowienia.ShowModal;
+  end;
+
 end;
 
 

@@ -75,7 +75,7 @@ object NoweZamowienie: TNoweZamowienie
       Width = 121
       Height = 21
       TabOrder = 0
-      Text = 'edtLogin'
+      Text = '_________'
     end
     object edtImie: TEdit
       Left = 208
@@ -83,7 +83,7 @@ object NoweZamowienie: TNoweZamowienie
       Width = 121
       Height = 21
       TabOrder = 1
-      Text = 'edtLogin'
+      Text = '_________'
     end
     object edtNazwisko: TEdit
       Left = 424
@@ -91,7 +91,7 @@ object NoweZamowienie: TNoweZamowienie
       Width = 121
       Height = 21
       TabOrder = 2
-      Text = 'edtLogin'
+      Text = '_________'
     end
   end
   object dbgrd1: TDBGrid
@@ -140,6 +140,7 @@ object NoweZamowienie: TNoweZamowienie
     Height = 25
     Caption = 'Usu'#324' pozycj'#281
     TabOrder = 3
+    OnClick = btnUsunPozycjeClick
   end
   object btnDodajPozycje: TButton
     Left = 8

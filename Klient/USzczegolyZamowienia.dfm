@@ -143,11 +143,13 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
       item
         Expanded = False
         FieldName = 'cena'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'count'
+        Width = 64
         Visible = True
       end>
   end
@@ -206,7 +208,7 @@ object SzczegolyZamowienia: TSzczegolyZamowienia
     OnClick = btnDodajPozycjeClick
   end
   object btnDrukuj: TButton
-    Left = 286
+    Left = 374
     Top = 375
     Width = 75
     Height = 25

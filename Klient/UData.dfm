@@ -319,7 +319,7 @@ object DataModule1: TDataModule1
         'GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia,id' +
         'statusy')
     Params = <>
-    Left = 376
+    Left = 360
     Top = 192
     object wdstrngfldRaportMsclogin: TWideStringField
       FieldName = 'login'

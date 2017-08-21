@@ -27,10 +27,15 @@ type
     procedure cbbKlientChange(Sender: TObject);
     procedure btnDodajPozycjeClick(Sender: TObject);
     procedure btnAnulujClick(Sender: TObject);
+    procedure btnUsunPozycjeClick(Sender: TObject);
+    procedure btnPotwierdzUsunClick(Sender: TObject);
   private
-    { Private declarations }
+
   public
-    { Public declarations }
+    lbWybierzIlosc : TLabel;
+    cbbIlosc : TComboBox;
+    btnPotwierdzUsun : TButton;
+    cbbIloscIst : Boolean;
   end;
 
 var
@@ -55,6 +60,36 @@ begin
   cbbKlient.Enabled := False;
 end;
 
+procedure TNoweZamowienie.btnUsunPozycjeClick(Sender: TObject);
+var index : Integer ;
+begin
+    Zamowienie.UsunPozycje(DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger);
+    cbbIlosc:=TComboBox.Create(self);
+    cbbIlosc.Name := 'cbbIlosc';
+    cbbIlosc.Parent:=Self;
+    cbbIloscIst :=True;
+    cbbIlosc.Left:=260;
+    cbbIlosc.Top:=375;
+    cbbIlosc.Width:=70;
+    cbbIlosc.Height:=25;
+    for  Index := 1 to DataModule1.zqryszczegoly.FieldByName('count').AsInteger do
+    begin
+      cbbIlosc.Items.Add(Index.ToString);
+    end;
+    cbbIlosc.ItemIndex :=0;
+
+
+    btnPotwierdzUsun:=TButton.Create(self);
+    btnPotwierdzUsun.Name := 'btnPotwierdzUsun';
+    btnPotwierdzUsun.Caption := 'Usuñ';
+    btnPotwierdzUsun.Parent:=Self;
+    btnPotwierdzUsun.Left:=153;
+    btnPotwierdzUsun.Top:=375;
+    btnPotwierdzUsun.Width:=104;
+    btnPotwierdzUsun.Height:=25;
+    btnPotwierdzUsun.OnClick :=btnPotwierdzUsunClick;
+end;
+
 procedure TNoweZamowienie.cbbKlientChange(Sender: TObject);
    var znak : integer;
        tekst : string;
@@ -74,6 +109,7 @@ begin
   edtImie.Text := DataModule1.zqry.FieldByName('imie').AsString;
   edtNazwisko.Text := DataModule1.zqry.FieldByName('nazwisko').AsString;
   btnDodajPozycje.Enabled := True;
+  btnUsunPozycje.Enabled:=True;
 end;
 
 procedure TNoweZamowienie.FormShow(Sender: TObject);
@@ -86,6 +122,7 @@ begin
   end;
   cbbKlient.ItemIndex:=-1;
   btnDodajPozycje.Enabled:=False;
+  btnUsunPozycje.Enabled:=False;
   try
     with  DataModule1.zqryMaxnumer, SQL do
     begin
@@ -113,5 +150,24 @@ begin
     Przycisk('B³¹d po³¹czenia z baza',mtError);
   end;
 end;
+procedure TNoweZamowienie.btnPotwierdzUsunClick(Sender: TObject);
+var i : Integer;
+    id : Integer;
+begin
+  id :=DataModule1.zqryszczegoly.FieldByName('idprodukty').AsInteger;
+  try
+     for I := 1 to cbbIlosc.ItemIndex do
+  begin
+    zamowienie.UsunPozycje(id);
+  end;
+  btnPotwierdzUsun.Free;
+  cbbIlosc.Free;
+  cbbIloscIst := false;
+   Przycisk('Sukces', mtConfirmation);
 
+  except
+    Przycisk('Wyst¹pi³ b³¹d', mtError);
+  end;
+  DataModule1.zqryszczegoly.Refresh;
+end;
 end.

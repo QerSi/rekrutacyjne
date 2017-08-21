@@ -40,13 +40,13 @@ begin
   if edtRok.Text='' then
   begin
     edtRok.Text := IntToStr(YearOf(Date));
-    rok :=  StrToInt(edtRok.Text);
   end;
+  rok :=  StrToInt(edtRok.Text);
   if edtMiesiac.Text='' then
   begin
     edtMiesiac.Text := IntToStr(MonthOf(Date));
-    miesiac :=  StrToInt(edtMiesiac.Text);
   end;
+  miesiac :=  StrToInt(edtMiesiac.Text);
   datakon := EndOfAMonth(rok, miesiac);
   datapocz := StartOfAMonth(rok, miesiac);
   with DataModule1.zqryRaportMsc, SQL do

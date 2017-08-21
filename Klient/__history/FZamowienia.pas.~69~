@@ -1,0 +1,65 @@
+unit FZamowienia;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls,Zamowienie,FrameBase, Vcl.ExtCtrls,UNoweZamowienie,UData;
+
+type
+  TZamowienia = class(TFrame)
+    btnSzczegoly: TButton;
+    dbgrd1: TDBGrid;
+    pnl2: TPanel;
+    lbl4: TLabel;
+    btnDodaj: TButton;
+    procedure btnSzczegolyClick(Sender: TObject);
+    procedure btnDodajClick(Sender: TObject);
+
+   public
+   constructor Create(wybraneZamowienie : TZamowienie); reintroduce; overload;
+
+   private
+    wybraneZamowienie : TZamowienie;
+    noweZamowienie : TNoweZamowienie;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses USzczegolyZamowienia, UMain;
+
+procedure TZamowienia.btnDodajClick(Sender: TObject);
+begin
+  try
+    with DataModule1.zqry, SQL do
+    begin
+      Close;
+      Clear;
+      Add('Select * from uzytkownicy');
+      Open;
+    end;
+    noweZamowienie := TNoweZamowienie.Create(self);
+    noweZamowienie.ShowModal;
+  except
+    main.przycisk('B³¹d pocz³¹czenia z baz¹',mtError);
+  end;
+
+end;
+
+procedure TZamowienia.btnSzczegolyClick(Sender: TObject);
+begin
+  wybraneZamowienie := TZamowienie.Create(DataModule1.zqryzam.FieldByName('data_zamowienia').AsString,DataModule1.zqryzam.FieldByName('idzamowienia').AsInteger,DataModule1.zqryzam.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqryzam.FieldByName('idstatusy').AsInteger,DataModule1.zqryzam.FieldByName('numer_zamowienia').AsInteger);
+  SzczegolyZamowienia := TSzczegolyZamowienia.Create(wybraneZamowienie);
+  SzczegolyZamowienia.ShowModal;
+end;
+
+
+
+constructor TZamowienia.Create(wybraneZamowienie : TZamowienie);
+begin
+Self.wybraneZamowienie := wybraneZamowienie;
+end;
+end.

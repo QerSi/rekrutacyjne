@@ -1,0 +1,88 @@
+unit FraportMsc;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls,UData,DateUtils, Vcl.ExtCtrls, frxClass, frxDBSet,FrameBase;
+
+type
+  TRaportMsc = class(TFrame)
+    btnGeneruj: TButton;
+    edtMiesiac: TEdit;
+    edtRok: TEdit;
+    dbgrd1: TDBGrid;
+    pnl1: TPanel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    frxRaportMsc: TfrxReport;
+    frxdbRaportMsc: TfrxDBDataset;
+    chkAnulowane: TCheckBox;
+    lbl1: TLabel;
+    pnl2: TPanel;
+    lbl4: TLabel;
+    procedure edtRokExit(Sender: TObject);
+    procedure btnGenerujClick(Sender: TObject);
+  private
+    miesiac,rok : Integer;
+    datakon, datapocz : TDate;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TRaportMsc.btnGenerujClick(Sender: TObject);
+begin
+  if edtRok.Text='' then
+  begin
+    edtRok.Text := IntToStr(YearOf(Date));
+  end;
+  rok :=  StrToInt(edtRok.Text);
+  if edtMiesiac.Text='' then
+  begin
+    edtMiesiac.Text := IntToStr(MonthOf(Date));
+  end;
+  miesiac :=  StrToInt(edtMiesiac.Text);
+  datakon := EndOfAMonth(rok, miesiac);
+  datapocz := StartOfAMonth(rok, miesiac);
+  with DataModule1.zqryRaportMsc, SQL do
+  begin
+    Close;
+    Clear;
+    Add('select distinct on(numer_zamowienia) login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy,zamowienia.iduzytkownicy, SUM(produkty.cena) ');
+    Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia >=:datapocz AND data_zamowienia <=:datakon AND zamowienia.idprodukty=produkty.idprodukty AND zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy ');
+    if chkAnulowane.Checked = False then
+    begin
+      Add('AND idstatusy != 3 ');
+    end;
+    Add('GROUP BY login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy,zamowienia.iduzytkownicy');
+    ParamByName('datapocz').AsString := FormatDateTime('yyy-mm-dd', datapocz);
+    ParamByName('datakon').AsString := FormatDateTime('yyy-mm-dd', datakon);
+    Open;
+  end;
+
+end;
+
+procedure TRaportMsc.edtRokExit(Sender: TObject);
+var dl:Integer;
+begin
+begin
+  dl := Length(edtRok.Text);
+  if (dl<4) or (edtRok.Text='') or (StrToInt(edtRok.Text)>YearOf(Date))  then
+  begin
+    edtRok.Text := IntToStr(YearOf(Date));
+    rok :=  StrToInt(edtRok.Text);
+  end
+  else
+  begin
+    rok :=  StrToInt(edtRok.Text);
+  end;
+end;
+end;
+
+
+end.

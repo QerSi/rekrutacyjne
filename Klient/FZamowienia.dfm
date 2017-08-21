@@ -41,13 +41,13 @@ object Zamowienia: TZamowienia
       item
         Expanded = False
         FieldName = 'status'
-        Width = 128
+        Width = 134
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'numer_zamowienia'
-        Width = 221
+        Width = 158
         Visible = True
       end>
   end

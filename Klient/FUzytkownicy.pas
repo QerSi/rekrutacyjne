@@ -48,9 +48,12 @@ end;
 
 procedure TUzytkownicy.btnEdytujClick(Sender: TObject);
 begin
+  if DataModule1.zqry.RecordCount<>0 then
+  begin
   wybranyUzytkownik := TUzytkownik.Create(DataModule1.zqry.FieldByName('iduzytkownicy').AsInteger,DataModule1.zqry.FieldByName('login').AsString,DataModule1.zqry.FieldByName('haslo').AsString,DataModule1.zqry.FieldByName('imie').AsString,DataModule1.zqry.FieldByName('nazwisko').AsString,DataModule1.zqry.FieldByName('administrator').AsBoolean,DataModule1.zqry.FieldByName('liczba_zamowien').AsInteger);
   EdytujUzytkownika := TEdytujUzytkownika.Create(wybranyUzytkownik);
-  EdytujUzytkownika.ShowModal;
+  EdytujUzytkownika.ShowModal;;
+  end;
 end;
 
 procedure TUzytkownicy.btnUsunClick(Sender: TObject);

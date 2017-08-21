@@ -47,6 +47,7 @@ object Uzytkownicy: TUzytkownicy
       item
         Expanded = False
         FieldName = 'nazwisko'
+        Width = 155
         Visible = True
       end
       item
@@ -59,7 +60,7 @@ object Uzytkownicy: TUzytkownicy
         Expanded = False
         FieldName = 'liczba_zamowien'
         ImeMode = imKata
-        Width = 153
+        Width = 125
         Visible = True
       end>
   end
