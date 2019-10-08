@@ -53,6 +53,7 @@ begin
   begin
     Close;
     Clear;
+	Clear;
     Add('select distinct on(numer_zamowienia) login,imie,nazwisko,numer_zamowienia,data_zamowienia,idstatusy,zamowienia.iduzytkownicy, SUM(produkty.cena) ');
     Add('From zamowienia,uzytkownicy,produkty WHERE data_zamowienia >=:datapocz AND data_zamowienia <=:datakon AND zamowienia.idprodukty=produkty.idprodukty AND zamowienia.iduzytkownicy=uzytkownicy.iduzytkownicy ');
     if chkAnulowane.Checked = False then
